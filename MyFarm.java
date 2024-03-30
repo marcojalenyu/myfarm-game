@@ -65,7 +65,7 @@ public class MyFarm {
      */
     public void generateRocks() {
         try {
-            File myObj = new File("filename.txt");
+            File myObj = new File("assets/filename.txt");
             Scanner reader = new Scanner(myObj);
             while(reader.hasNextLine()) {
                 String data = reader.nextLine();

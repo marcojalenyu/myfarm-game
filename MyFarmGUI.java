@@ -14,7 +14,7 @@ public class MyFarmGUI extends JFrame {
      */
     public MyFarmGUI(){
         super("My Farm");
-        ImageIcon icon = new ImageIcon("icon.png");
+        ImageIcon icon = new ImageIcon("assets/icon.png");
         setIconImage(icon.getImage());
         setLayout(new BorderLayout());
         setSize(900, 680);
@@ -55,7 +55,7 @@ public class MyFarmGUI extends JFrame {
         gameTitlePanel.setBackground(Color.decode("#abd7d8"));
 
         JLabel gameTitle = new JLabel();
-        gameTitle.setIcon(new ImageIcon("my-farm.png"));
+        gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
 
         gameTitlePanel.add(gameTitle);
         panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
@@ -194,49 +194,49 @@ public class MyFarmGUI extends JFrame {
         JPanel plantsTab =  new JPanel();
         plantsTab.setBackground(Color.decode("#a18a77"));
 
-        Icon turnipIcon = new ImageIcon("Turnip.png");
+        Icon turnipIcon = new ImageIcon("assets/Turnip.png");
         JButton turnip = new JButton(turnipIcon);
         turnip.setName("turnip");
         turnip.setPreferredSize( new Dimension(50,50));
         seeds.add(turnip);
 
-        Icon carrotIcon = new ImageIcon("Carrot.png");
+        Icon carrotIcon = new ImageIcon("assets/Carrot.png");
         JButton carrot= new JButton(carrotIcon);
         carrot.setName("carrot");
         carrot.setPreferredSize( new Dimension(50,50));
         seeds.add(carrot);
 
-        Icon potatoIcon = new ImageIcon("Potato.png");
+        Icon potatoIcon = new ImageIcon("assets/Potato.png");
         JButton potato= new JButton(potatoIcon);
         potato.setName("potato");
         potato.setPreferredSize( new Dimension(50,50));
         seeds.add(potato);
 
-        Icon roseIcon = new ImageIcon("Rose.png");
+        Icon roseIcon = new ImageIcon("assets/Rose.png");
         JButton rose = new JButton(roseIcon);
         rose.setName("rose");
         rose.setPreferredSize( new Dimension(50,50));
         seeds.add(rose);
 
-        Icon tulipIcon = new ImageIcon("Tulip.png");
+        Icon tulipIcon = new ImageIcon("assets/Tulip.png");
         JButton tulip = new JButton(tulipIcon);
         tulip.setName("tulip");
         tulip.setPreferredSize( new Dimension(50,50));
         seeds.add(tulip);
 
-        Icon sunflowerIcon = new ImageIcon("Sunflower.png");
+        Icon sunflowerIcon = new ImageIcon("assets/Sunflower.png");
         JButton sunflower= new JButton(sunflowerIcon);
         sunflower.setName("sunflower");
         sunflower.setPreferredSize( new Dimension(50,50));
         seeds.add(sunflower);
 
-        Icon mangoIcon = new ImageIcon("Mango.png");
+        Icon mangoIcon = new ImageIcon("assets/Mango.png");
         JButton mango = new JButton(mangoIcon);
         mango.setName("mango");
         mango.setPreferredSize( new Dimension(50,50));
         seeds.add(mango);
 
-        Icon appleIcon = new ImageIcon("Apple.png");
+        Icon appleIcon = new ImageIcon("assets/Apple.png");
         JButton apple = new JButton(appleIcon);
         apple.setName("apple");;
         apple.setPreferredSize( new Dimension(50,50));
