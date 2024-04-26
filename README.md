@@ -1,2 +1,2 @@
 # MyFarm Game
-A short and basic farming simulator maade using Java.
+A short and basic farming simulator made using Java.
