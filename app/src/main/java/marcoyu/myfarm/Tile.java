@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 /**
     The Tile class contains records related to each tile in the plot.
  */

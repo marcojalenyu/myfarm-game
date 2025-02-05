@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -54,47 +56,47 @@ public class Controller implements ActionListener{
                 Crop crop = tile.getCrop();
 
                 if (tile.hasRock())
-                    tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
+                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/rocked.jpg")));
                 else if (tile.isPlowed()) {
                     if(crop == null)
-                        tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
+                        tileIcon.setIcon(new ImageIcon(getClass().getResource("/plowed.jpg")));
                     else {
                         if (crop.isWithered())
-                            tileIcon.setIcon(new ImageIcon("assets/withered.jpg"));
+                            tileIcon.setIcon(new ImageIcon(getClass().getResource("/withered.jpg")));
                         else if(crop.getHarvestTime() == 0)
-                            tileIcon.setIcon(new ImageIcon("assets/"+crop.getSeed()+"Done.png"));
+                            tileIcon.setIcon(new ImageIcon(getClass().getResource("/"+crop.getSeed()+"Done.png")));
                         else if(crop.getTimesWatered() >= crop.getWaterNeeded()) {
                             if(crop.getTimesFertilized() >= crop.getFertilizerNeeded()) {
                                 if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/healthyTree.png")));
                                 else
-                                    tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/healthyPlant.png")));
                             }
                             else {
                                 if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/wateredTree.png")));
                                 else
-                                    tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/wateredPlant.png")));
                             }
                         }
                         else if(crop.getTimesFertilized() >= crop.getFertilizerNeeded()) {
                             if(crop.getTimesWatered() < crop.getWaterNeeded()) {
                                 if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/fertilizedTree.png")));
                                 else
-                                    tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
+                                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/fertilizedPlant.png")));
                             }
                         }
                         else {
                             if(crop.getType().equals(CropType.FRUIT_TREE))
-                                tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
+                                tileIcon.setIcon(new ImageIcon(getClass().getResource("/growingTree.png")));
                             else
-                                tileIcon.setIcon(new ImageIcon("assets/growingPlant.jpg"));
+                                tileIcon.setIcon(new ImageIcon(getClass().getResource("/growingPlant.png")));
                         }
                     }
                 }
                 else
-                    tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
+                    tileIcon.setIcon(new ImageIcon(getClass().getResource("/unplowed.jpg")));
             }
         }
     }

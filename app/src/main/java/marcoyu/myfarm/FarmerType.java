@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 /**
  The FarmerType class is an enumeration of the registration statuses of the farmer.
  */

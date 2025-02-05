@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 /**
     The CropType class is an enumeration of the crop types.
  */

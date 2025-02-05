@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 import javax.swing.*;
 
 /**

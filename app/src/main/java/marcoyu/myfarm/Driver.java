@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 /**
     The Driver class runs the main of MyFarm.
  */

@@ -1,3 +1,5 @@
+package marcoyu.myfarm;
+
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
