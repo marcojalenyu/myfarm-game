@@ -51,6 +51,25 @@ public class Crop {
     }
 
     /**
+     * Updates the crop per day by reducing harvest time and checking if harvestable or withered
+     */
+    public void update() {
+        this.harvestTime--;
+
+        if(this.harvestTime == 0) {
+            if (this.timesWatered < this.waterNeeded || this.timesFertilized < this.fertilizerNeeded) {
+                cropState = CropStates.WITHERED;
+            }
+            else {
+                cropState = CropStates.HARVESTABLE;
+            }
+        }
+        else if(this.harvestTime < 0) {
+            cropState = CropStates.WITHERED;
+        }
+    }
+
+    /**
      Getters and Setters:
      */
     public String getSeed() {

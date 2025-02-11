@@ -19,6 +19,16 @@ public class Tile {
     }
 
     /**
+     * Updates the tile and the crop inside the tile.
+     */
+    public void update() {
+
+        if (this.tileState == TileStates.PLANTED && this.crop != null) {
+            this.crop.update();
+        }
+    }
+
+    /**
      Getters and Setters:
      */
     public TileStates getTileState() {

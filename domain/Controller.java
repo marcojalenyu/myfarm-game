@@ -51,7 +51,6 @@ public class Controller implements ActionListener{
             for (int j = 0; j < 10; j++) {
                 Tile tile = myFarm.getTile(i, j);
                 JButton tileIcon = gui.getTile(i, j);
-                Crop crop = tile.getCrop();
 
                 switch(tile.getTileState()) {
                     case TileStates.ROCK:
@@ -67,6 +66,7 @@ public class Controller implements ActionListener{
                         break;
 
                     case TileStates.PLANTED:
+                        Crop crop = tile.getCrop();
 
                         switch(crop.getCropState()) {
 

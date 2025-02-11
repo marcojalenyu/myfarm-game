@@ -38,29 +38,15 @@ public class MyFarm {
     }
 
     /**
-     This function advances the day of the game, affecting every crop planted.
+     This function advances the day of the game, calls update for all tiles.
      */
     public void advanceDay() {
         this.day++;
 
         for (int row = 0; row < this.width; row++) {
             for (int col = 0; col < this.length; col++) {
-                Crop crop = this.tiles[row][col].getCrop();
-                if (crop != null){
-                    crop.setHarvestTime(crop.getHarvestTime()-1);
 
-                    if(crop.getHarvestTime() == 0) {
-                        if (crop.getTimesWatered() < crop.getWaterNeeded() || crop.getTimesFertilized() < crop.getFertilizerNeeded()) {
-                            this.tiles[row][col].getCrop().setCropState(CropStates.WITHERED);
-                        }
-                        else {
-                            this.tiles[row][col].getCrop().setCropState(CropStates.HARVESTABLE);
-                        }
-                    }
-                    else if(crop.getHarvestTime() < 0) {
-                        this.tiles[row][col].getCrop().setCropState(CropStates.WITHERED);
-                    }
-                }
+                tiles[row][col].update();
             }
         }
     }
@@ -96,10 +82,12 @@ public class MyFarm {
 
         for (int row = 0; row < this.width; row++)
             for (int col = 0; col < this.length; col++)
-                if(this.tiles[row][col].getCrop() == null || this.tiles[row][col].getCrop().getCropState() == CropStates.WITHERED)
+                if(this.tiles[row][col].getTileState() != TileStates.PLANTED || this.tiles[row][col].getCrop().getCropState() == CropStates.WITHERED)
                     inactiveCount++;
 
-        return this.farmer.getWallet() < 5 - this.farmer.getSeedCostReduction() && inactiveCount == this.length * this.width;
+        // TODO: Remove Magic Number
+        return this.farmer.getWallet() < 5 - this.farmer.getSeedCostReduction() &&
+                inactiveCount == this.length * this.width;
     }
 
     /**
