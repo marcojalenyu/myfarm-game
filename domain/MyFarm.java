@@ -25,10 +25,10 @@ public class MyFarm {
      */
     public MyFarm() {
         this.farmer = new Farmer();
-        this.width = 5;
-        this.length = 10;
-        this.tiles = new Tile[5][10];
-        this.day = 1;
+        this.width = Constants.FARM_WIDTH;
+        this.length = Constants.FARM_LENGTH;
+        this.tiles = new Tile[width][length];
+        this.day = Constants.START_DAY;
 
         for (int row = 0; row < width; row++)
             for (int col = 0; col < length; col++)
