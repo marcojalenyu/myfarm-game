@@ -51,16 +51,14 @@ public class MyFarm {
 
                     if(crop.getHarvestTime() == 0) {
                         if (crop.getTimesWatered() < crop.getWaterNeeded() || crop.getTimesFertilized() < crop.getFertilizerNeeded()) {
-                            this.tiles[row][col].setTileState(TileStates.WITHERED);
-                            this.tiles[row][col].setCrop(null);
+                            this.tiles[row][col].getCrop().setCropState(CropStates.WITHERED);
                         }
                         else {
-                            this.tiles[row][col].setTileState(TileStates.HARVESTABLE);
+                            this.tiles[row][col].getCrop().setCropState(CropStates.HARVESTABLE);
                         }
                     }
                     else if(crop.getHarvestTime() < 0) {
-                        this.tiles[row][col].setTileState(TileStates.WITHERED);
-                        this.tiles[row][col].setCrop(null);
+                        this.tiles[row][col].getCrop().setCropState(CropStates.WITHERED);
                     }
                 }
             }
@@ -98,7 +96,7 @@ public class MyFarm {
 
         for (int row = 0; row < this.width; row++)
             for (int col = 0; col < this.length; col++)
-                if(this.tiles[row][col].getCrop() == null || this.tiles[row][col].getTileState() == TileStates.WITHERED)
+                if(this.tiles[row][col].getCrop() == null || this.tiles[row][col].getCrop().getCropState() == CropStates.WITHERED)
                     inactiveCount++;
 
         return this.farmer.getWallet() < 5 - this.farmer.getSeedCostReduction() && inactiveCount == this.length * this.width;

@@ -3,6 +3,4 @@ public enum TileStates {
     NOT_PLOWED,
     PLOWED,
     PLANTED,
-    HARVESTABLE,
-    WITHERED
 }

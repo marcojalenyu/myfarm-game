@@ -182,7 +182,7 @@ public class Farmer {
     public void harvest(Tile tile) {
         Crop crop = tile.getCrop();
 
-        if(crop != null && tile.getTileState() == TileStates.HARVESTABLE) {
+        if(crop.getCropState() == CropStates.HARVESTABLE) {
             double harvestTotal = crop.getProductYield()*(crop.getBasePrice()+earnBonus);
             double waterBonus = harvestTotal*0.2*(crop.getTimesWatered()-1);
             double fertilizerBonus = harvestTotal*0.5*crop.getTimesFertilized();

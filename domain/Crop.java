@@ -30,7 +30,7 @@ public class Crop {
     private int productYield;
     private double experienceYield;
     private double basePrice;
-    private boolean isWithered;
+    private CropStates cropState = CropStates.GROWING;
 
     /**
      Constructor of Crop initializes the seed planted on a tile.
@@ -48,7 +48,6 @@ public class Crop {
         this.productYield = productYield;
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
-        this.isWithered = false;
     }
 
     /**
@@ -98,6 +97,13 @@ public class Crop {
     }
     public void setTimesFertilized(int timesFertilized) {
         this.timesFertilized = timesFertilized;
+    }
+
+    public CropStates getCropState() {
+        return cropState;
+    }
+    public void setCropState(CropStates cropState) {
+        this.cropState = cropState;
     }
 }
 
