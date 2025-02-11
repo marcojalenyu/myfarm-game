@@ -44,9 +44,7 @@ public class Controller implements ActionListener{
         gui.getFarmerType().setText("Type: " + farmer.getType());
         gui.getDay().setText("Day " + myFarm.getDay());
 
-        /**
-         For updating the tiles:
-         */
+        // For updating the tiles images:
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 10; j++) {
                 Tile tile = myFarm.getTile(i, j);
@@ -170,7 +168,7 @@ public class Controller implements ActionListener{
 
         String button = ((JButton) e.getSource()).getName();
 
-        if (selected == "") {
+        if (selected.isEmpty()) {
             switch(button) {
                 case "End Day":
                     if (!myFarm.isGameOver()) {
