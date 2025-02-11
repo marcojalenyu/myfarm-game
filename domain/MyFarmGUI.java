@@ -30,7 +30,7 @@ public class MyFarmGUI extends JFrame {
      2. actions: contains a list of buttons representing the tools/actions
      3. seeds: contains a list of buttons representing the seeds of crops
      */
-    private JButton[][] tiles = new JButton[5][10];
+    private JButton[][] tiles = new JButton[Constants.FARM_WIDTH][Constants.FARM_LENGTH];
     private ArrayList<JButton> actions = new ArrayList<>();
     private ArrayList<JButton> seeds = new ArrayList<>();
 
@@ -152,8 +152,8 @@ public class MyFarmGUI extends JFrame {
         JPanel row4 = new JPanel();
         row4.setBackground(Color.decode("#a18a77"));
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
 
                 tiles[i][j] = new JButton();
                 tiles[i][j].setName(String.valueOf(i*10+j));
@@ -299,8 +299,8 @@ public class MyFarmGUI extends JFrame {
      * @param listener: used to catch inputs
      */
     public void setActionListener(ActionListener listener) {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
                 tiles[i][j].addActionListener(listener);
             }
         }

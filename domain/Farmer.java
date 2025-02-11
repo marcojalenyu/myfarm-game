@@ -26,22 +26,17 @@ public class Farmer {
     private int fertilizerLimitIncrease;
 
     /**
-     Constructor of Farmer initializes with the following:
-     1. 100 Objectcoins
-     2. 0 Levels
-     3. 0 Experience Points
-     4. FARMER status
-     5. No earn bonus, cost reduction, and bonus limit increase
+     Constructor of Farmer initializes with the default values in Constants.
      */
     public Farmer() {
-        this.wallet = 100.0;
-        this.level = 0;
-        this.experience = 0.0;
-        this.type = FarmerType.FARMER;
-        this.earnBonus = 0;
-        this.seedCostReduction = 0;
-        this.waterLimitIncrease = 0;
-        this.fertilizerLimitIncrease = 0;
+        this.wallet = Constants.START_WALLET;
+        this.level = Constants.START_LEVEL;
+        this.experience = Constants.START_EXPERIENCE;
+        this.type = Constants.START_FARMER_TYPE;
+        this.earnBonus = Constants.START_BONUS;
+        this.seedCostReduction = Constants.START_SEED_DISCOUNT;
+        this.waterLimitIncrease = Constants.START_WATER_BONUS_LIMIT;
+        this.fertilizerLimitIncrease = Constants.START_FERTILIZER_BONUS_LIMIT;
     }
 
     /**
@@ -51,7 +46,7 @@ public class Farmer {
     public void plow(Tile tile) {
         if(tile.getTileState() == TileStates.NOT_PLOWED) {
             tile.setTileState(TileStates.PLOWED);
-            gainExperience(0.5);
+            gainExperience(Constants.PLOWING_EXP);
         }
         else
             JOptionPane.showMessageDialog(null, "This tile cannot be plowed.", "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -155,7 +150,7 @@ public class Farmer {
         if(crop != null) {
             if(crop.getTimesWatered() < crop.getWaterBonusLimit())
                 crop.setTimesWatered(crop.getTimesWatered()+1);
-            gainExperience(0.5);
+            gainExperience(Constants.WATERING_EXP);
         }
         else
             JOptionPane.showMessageDialog(null, "This tile has no crop.", "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -167,11 +162,11 @@ public class Farmer {
      */
     public void fertilize(Crop crop) {
         if(crop != null) {
-            if(wallet >= 10) {
+            if(wallet >= Constants.FERTILIZER_COST) {
                 if(crop.getTimesFertilized() < crop.getFertilizerBonusLimit())
                     crop.setTimesFertilized(crop.getTimesFertilized()+1);
-                wallet -= 10;
-                gainExperience(4);
+                wallet -= Constants.FERTILIZER_COST;
+                gainExperience(Constants.FERTILIZING_EXP);
             }
             else
                 JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -220,12 +215,12 @@ public class Farmer {
         if (tile.getTileState() == TileStates.ROCK)
             JOptionPane.showMessageDialog(null, "This tile cannot be dug.", "Invalid", JOptionPane.ERROR_MESSAGE);
 
-        if(this.getWallet() < 7)
+        if(this.getWallet() < Constants.DIGGING_COST)
             JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
 
         // Tile is diggable and have enough money to dig
-        this.setWallet(getWallet() - 7);
-        gainExperience(2);
+        this.setWallet(getWallet() - Constants.DIGGING_COST);
+        gainExperience(Constants.DIGGING_EXP);
         tile.setTileState(TileStates.NOT_PLOWED);
         tile.setCrop(null);
     }
@@ -239,13 +234,13 @@ public class Farmer {
         if (tile.getTileState() != TileStates.ROCK)
             JOptionPane.showMessageDialog(null, "This tile cannot be mined.", "Invalid", JOptionPane.ERROR_MESSAGE);
 
-        if (this.getWallet() < 50)
+        if (this.getWallet() < Constants.MINING_COST)
             JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
 
         // Tile is rock and have enough money to mine
         tile.setTileState(TileStates.NOT_PLOWED);
-        wallet -= 50;
-        gainExperience(15);
+        wallet -= Constants.MINING_COST;
+        gainExperience(Constants.MINING_EXP);
     }
 
     /**
@@ -292,8 +287,8 @@ public class Farmer {
      */
     public void gainExperience(double points) {
         experience += points;
-        if(experience >= 100) {
-            experience -= 100;
+        if(experience >= Constants.EXP_TO_LEVEL_UP) {
+            experience -= Constants.EXP_TO_LEVEL_UP;
             level++;
             JOptionPane.showMessageDialog(null, "Farmer is now level " + level, "Leveled Up", JOptionPane.PLAIN_MESSAGE);
         }
@@ -308,9 +303,9 @@ public class Farmer {
         int row = -1;
         int col = -1;
 
-        for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 10; j++) {
-                if(i == 0 || i == 4 || j == 0 || j == 9) {
+        for(int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for(int j = 0; j < Constants.FARM_LENGTH; j++) {
+                if(i == 0 || i == (Constants.FARM_WIDTH-1) || j == 0 || j == (Constants.FARM_LENGTH-1)) {
                     if (tiles[i][j].equals(tile))
                         return false;
                 }

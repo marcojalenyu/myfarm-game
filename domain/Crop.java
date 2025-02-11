@@ -39,10 +39,10 @@ public class Crop {
         this.seed = seed;
         this.type = type;
         this.harvestTime = harvestTime;
-        this.timesWatered = 0;
+        this.timesWatered = Constants.START_TIMES_WATERED;
         this.waterNeeded = waterNeeded;
         this.waterBonusLimit = waterBonusLimit;
-        this.timesFertilized = 0;
+        this.timesFertilized = Constants.START_TIMES_FERTILIZED;
         this.fertilizerNeeded = fertilizerNeeded;
         this.fertilizerBonusLimit = fertilizerBonusLimit;
         this.productYield = productYield;
