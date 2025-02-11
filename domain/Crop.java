@@ -111,50 +111,13 @@ public class Crop {
     public CropType getType() {
         return type;
     }
-    public int getHarvestTime() {
-        return harvestTime;
-    }
-    public int getTimesWatered() {
-        return timesWatered;
-    }
-    public int getWaterNeeded() {
-        return waterNeeded;
-    }
-    public int getWaterBonusLimit() {
-        return waterBonusLimit;
-    }
-    public int getTimesFertilized() {
-        return timesFertilized;
-    }
-    public int getFertilizerNeeded() {
-        return fertilizerNeeded;
-    }
-    public int getFertilizerBonusLimit() {
-        return fertilizerBonusLimit;
-    }
     public int getProductYield() {
         return productYield;
     }
     public double getExperienceYield() {
         return experienceYield;
     }
-    public double getBasePrice() {
-        return basePrice;
-    }
-    public void setHarvestTime(int harvestTime) {
-        this.harvestTime = harvestTime;
-    }
-    public void setTimesWatered(int timesWatered) {
-        this.timesWatered = timesWatered;
-    }
-    public void setTimesFertilized(int timesFertilized) {
-        this.timesFertilized = timesFertilized;
-    }
-
     public CropStates getCropState() {
         return cropState;
-    }
-    public void setCropState(CropStates cropState) {
-        this.cropState = cropState;
     }
 }
