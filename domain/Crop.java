@@ -90,9 +90,6 @@ public class Crop {
     public double getBasePrice() {
         return basePrice;
     }
-    public boolean isWithered() {
-        return isWithered;
-    }
     public void setHarvestTime(int harvestTime) {
         this.harvestTime = harvestTime;
     }
@@ -101,9 +98,6 @@ public class Crop {
     }
     public void setTimesFertilized(int timesFertilized) {
         this.timesFertilized = timesFertilized;
-    }
-    public void setWithered(boolean withered) {
-        isWithered = withered;
     }
 }
 

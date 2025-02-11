@@ -53,48 +53,59 @@ public class Controller implements ActionListener{
                 JButton tileIcon = gui.getTile(i, j);
                 Crop crop = tile.getCrop();
 
-                if (tile.hasRock())
-                    tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
-                else if (tile.isPlowed()) {
-                    if(crop == null)
+                switch(tile.getTileState()) {
+                    case TileStates.ROCK:
+                        tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
+                        break;
+
+                    case TileStates.NOT_PLOWED:
+                        tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
+                        break;
+
+                    case TileStates.PLOWED:
                         tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
-                    else {
-                        if (crop.isWithered())
-                            tileIcon.setIcon(new ImageIcon("assets/withered.jpg"));
-                        else if(crop.getHarvestTime() == 0)
-                            tileIcon.setIcon(new ImageIcon("assets/"+crop.getSeed()+"Done.png"));
-                        else if(crop.getTimesWatered() >= crop.getWaterNeeded()) {
-                            if(crop.getTimesFertilized() >= crop.getFertilizerNeeded()) {
-                                if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
-                                else
-                                    tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
-                            }
-                            else {
-                                if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
-                                else
-                                    tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
-                            }
-                        }
-                        else if(crop.getTimesFertilized() >= crop.getFertilizerNeeded()) {
-                            if(crop.getTimesWatered() < crop.getWaterNeeded()) {
-                                if(crop.getType().equals(CropType.FRUIT_TREE))
-                                    tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
-                                else
-                                    tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
-                            }
+                        break;
+
+                    case TileStates.PLANTED:
+
+                        boolean enoughWater = false;
+                        boolean enoughFertilizer = false;
+
+                        if(crop.getTimesWatered() >= crop.getWaterNeeded())
+                            enoughWater = true;
+                        if(crop.getTimesFertilized() >= crop.getFertilizerNeeded())
+                            enoughFertilizer = true;
+
+                        if (crop.getType().equals(CropType.FRUIT_TREE)){
+                            if (enoughWater && enoughFertilizer)
+                                tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
+                            else if (enoughWater)
+                                tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
+                            else if (enoughFertilizer)
+                                tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
+                            else
+                                tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
                         }
                         else {
-                            if(crop.getType().equals(CropType.FRUIT_TREE))
-                                tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
+                            if (enoughWater && enoughFertilizer)
+                                tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
+                            else if (enoughWater)
+                                tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
+                            else if (enoughFertilizer)
+                                tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
                             else
                                 tileIcon.setIcon(new ImageIcon("assets/growingPlant.jpg"));
                         }
-                    }
+                        break;
+
+                    case TileStates.HARVESTABLE:
+                        tileIcon.setIcon(new ImageIcon("assets/"+crop.getSeed()+"Done.png"));
+                        break;
+
+                    case TileStates.WITHERED:
+                        tileIcon.setIcon(new ImageIcon("assets/withered.jpg"));
+                        break;
                 }
-                else
-                    tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
             }
         }
     }

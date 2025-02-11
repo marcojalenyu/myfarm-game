@@ -49,8 +49,8 @@ public class Farmer {
      @param tile - tile that will be plowed by the farmer
      */
     public void plow(Tile tile) {
-        if(!tile.isPlowed() && !tile.hasRock()) {
-            tile.setPlowed(true);
+        if(tile.getTileState() == TileStates.NOT_PLOWED) {
+            tile.setTileState(TileStates.PLOWED);
             gainExperience(0.5);
         }
         else
@@ -67,7 +67,8 @@ public class Farmer {
 
         boolean hasCoins = false;
 
-        if(tile.isPlowed() && tile.getCrop() == null) {
+        if(tile.getTileState() == TileStates.PLOWED) {
+
             switch(plant) {
                 case "turnip":
                     if(wallet >= 5-seedCostReduction) {
@@ -134,8 +135,13 @@ public class Farmer {
                     }
                     break;
             }
-            if(!hasCoins)
+
+            if (hasCoins) {
+                tile.setTileState(TileStates.PLANTED);
+            }
+            else {
                 JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            }
         }
         else
             JOptionPane.showMessageDialog(null, "This tile cannot be planted on.", "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -181,7 +187,7 @@ public class Farmer {
     public void harvest(Tile tile) {
         Crop crop = tile.getCrop();
 
-        if(crop != null && !crop.isWithered() && crop.getHarvestTime() == 0) {
+        if(crop != null && tile.getTileState() == TileStates.HARVESTABLE) {
             double harvestTotal = crop.getProductYield()*(crop.getBasePrice()+earnBonus);
             double waterBonus = harvestTotal*0.2*(crop.getTimesWatered()-1);
             double fertilizerBonus = harvestTotal*0.5*crop.getTimesFertilized();
@@ -198,7 +204,7 @@ public class Farmer {
 
             wallet += finalHarvestPrice;
             gainExperience(crop.getExperienceYield());
-            tile.setPlowed(false);
+            tile.setTileState(TileStates.NOT_PLOWED);
             tile.setCrop(null);
         }
         else
@@ -206,22 +212,22 @@ public class Farmer {
     }
 
     /**
-     "Farmer digs crops on a tile" by setting crop to null and setting the isPlowed to false
+     "Farmer digs crops on a tile" by setting crop to null and setting state to NOT_PLOWED
      @param tile - tile will be shoveled  by the farmer
      */
     public void dig(Tile tile) {
-        if (!tile.hasRock()) {
-            if(this.getWallet() >= 7) {
-                this.setWallet(getWallet() - 7);
-                gainExperience(2);
-                tile.setCrop(null);
-                tile.setPlowed(false);
-            }
-            else
-                JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-        }
-        else
+
+        if (tile.getTileState() == TileStates.ROCK)
             JOptionPane.showMessageDialog(null, "This tile cannot be dug.", "Invalid", JOptionPane.ERROR_MESSAGE);
+
+        if(this.getWallet() < 7)
+            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+
+        // Tile is diggable and have enough money to dig
+        this.setWallet(getWallet() - 7);
+        gainExperience(2);
+        tile.setTileState(TileStates.NOT_PLOWED);
+        tile.setCrop(null);
     }
 
     /**
@@ -229,17 +235,17 @@ public class Farmer {
      @param tile - tile that will be mined by the farmer
      */
     public void mine(Tile tile) {
-        if (tile.hasRock()) {
-            if (wallet >= 50) {
-                tile.setRock(false);
-                wallet -= 50;
-                gainExperience(15);
-            }
-            else
-                JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-        }
-        else
+
+        if (tile.getTileState() != TileStates.ROCK)
             JOptionPane.showMessageDialog(null, "This tile cannot be mined.", "Invalid", JOptionPane.ERROR_MESSAGE);
+
+        if (this.getWallet() < 50)
+            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+
+        // Tile is rock and have enough money to mine
+        tile.setTileState(TileStates.NOT_PLOWED);
+        wallet -= 50;
+        gainExperience(15);
     }
 
     /**
@@ -317,7 +323,7 @@ public class Farmer {
 
         for(int i = row-1; i <= row+1; i++)
             for(int j = col-1; j <= col+1; j++)
-                if(tiles[i][j].hasRock() || tiles[i][j].getCrop() != null)
+                if (tiles[i][j].getTileState() != TileStates.NOT_PLOWED && tiles[i][j].getTileState() != TileStates.PLOWED)
                     return false;
 
         return true;

@@ -32,7 +32,7 @@ public class MyFarm {
 
         for (int row = 0; row < width; row++)
             for (int col = 0; col < length; col++)
-                this.tiles[row][col] = new Tile();
+                this.tiles[row][col] = new Tile(TileStates.NOT_PLOWED);
 
         generateRocks();
     }
@@ -50,11 +50,18 @@ public class MyFarm {
                     crop.setHarvestTime(crop.getHarvestTime()-1);
 
                     if(crop.getHarvestTime() == 0) {
-                        if (crop.getTimesWatered() < crop.getWaterNeeded() || crop.getTimesFertilized() < crop.getFertilizerNeeded())
-                            crop.setWithered(true);
+                        if (crop.getTimesWatered() < crop.getWaterNeeded() || crop.getTimesFertilized() < crop.getFertilizerNeeded()) {
+                            this.tiles[row][col].setTileState(TileStates.WITHERED);
+                            this.tiles[row][col].setCrop(null);
+                        }
+                        else {
+                            this.tiles[row][col].setTileState(TileStates.HARVESTABLE);
+                        }
                     }
-                    else if(crop.getHarvestTime() < 0)
-                        crop.setWithered(true);
+                    else if(crop.getHarvestTime() < 0) {
+                        this.tiles[row][col].setTileState(TileStates.WITHERED);
+                        this.tiles[row][col].setCrop(null);
+                    }
                 }
             }
         }
@@ -73,7 +80,7 @@ public class MyFarm {
                 int i = Integer.parseInt(substrings[0]);
                 int j = Integer.parseInt(substrings[1]);
 
-                tiles[i][j].setRock(true);
+                tiles[i][j].setTileState(TileStates.ROCK);
             }
         } catch(IOException e) {
             System.out.println("Error");
@@ -91,7 +98,7 @@ public class MyFarm {
 
         for (int row = 0; row < this.width; row++)
             for (int col = 0; col < this.length; col++)
-                if(this.tiles[row][col].getCrop() == null || this.tiles[row][col].getCrop().isWithered())
+                if(this.tiles[row][col].getCrop() == null || this.tiles[row][col].getTileState() == TileStates.WITHERED)
                     inactiveCount++;
 
         return this.farmer.getWallet() < 5 - this.farmer.getSeedCostReduction() && inactiveCount == this.length * this.width;
