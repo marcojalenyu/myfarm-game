@@ -117,23 +117,23 @@ public class Controller implements ActionListener{
         boolean isValid = false;
         int option = JOptionPane.NO_OPTION;
 
-        switch (farmer.getType()){
+        switch (farmer.getType()) {
             case FARMER:
-                if(farmer.getLevel() >= 5)
+                if (farmer.getLevel() >= 5)
                     isValid = true;
-                    option = JOptionPane.showConfirmDialog(gui,"Do you want to be a registered farmer for 200 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
+                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a registered farmer for 200 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                 break;
             case REGISTERED_FARMER:
-                if(farmer.getLevel() >= 10)
+                if (farmer.getLevel() >= 10)
                     isValid = true;
-                    option = JOptionPane.showConfirmDialog(gui,"Do you want to be a distinguished farmer for 300 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
+                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a distinguished farmer for 300 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                 break;
             case DISTINGUISHED_FARMER:
-                if(farmer.getLevel() >= 15)
+                if (farmer.getLevel() >= 15)
                     isValid = true;
-                    option = JOptionPane.showConfirmDialog(gui,"Do you want to be a legendary farmer for 400 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION ,
+                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a legendary farmer for 400 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION ,
                             JOptionPane.QUESTION_MESSAGE);
                 break;
             case LEGENDARY_FARMER:
@@ -142,7 +142,7 @@ public class Controller implements ActionListener{
                 break;
         }
 
-        if(option == JOptionPane.YES_OPTION)
+        if (option == JOptionPane.YES_OPTION)
             if(isValid)
                 return true;
             else
