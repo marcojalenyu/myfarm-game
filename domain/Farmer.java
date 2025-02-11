@@ -148,8 +148,7 @@ public class Farmer {
      */
     public void water(Crop crop) {
         if(crop != null) {
-            if(crop.getTimesWatered() < crop.getWaterBonusLimit())
-                crop.setTimesWatered(crop.getTimesWatered()+1);
+            crop.water();
             gainExperience(Constants.WATERING_EXP);
         }
         else
@@ -163,8 +162,7 @@ public class Farmer {
     public void fertilize(Crop crop) {
         if(crop != null) {
             if(wallet >= Constants.FERTILIZER_COST) {
-                if(crop.getTimesFertilized() < crop.getFertilizerBonusLimit())
-                    crop.setTimesFertilized(crop.getTimesFertilized()+1);
+                crop.fertilize();
                 wallet -= Constants.FERTILIZER_COST;
                 gainExperience(Constants.FERTILIZING_EXP);
             }

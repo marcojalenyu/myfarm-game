@@ -84,6 +84,16 @@ public class Crop {
         return finalHarvestPrice;
     }
 
+    public void water() {
+        if (timesWatered < waterBonusLimit)
+            timesWatered++;
+    }
+
+    public void fertilize() {
+        if (timesFertilized < fertilizerBonusLimit)
+            timesFertilized++;
+    }
+
     /**
      Getters and Setters:
      */
