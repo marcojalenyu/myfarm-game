@@ -14,9 +14,9 @@ public class Controller implements ActionListener{
      3. farmer: allows easier access to the farmer attribute of the model
      4. selected: stores the name of the selected button
      */
-    private MyFarmGUI gui;
-    private MyFarm myFarm;
-    private Farmer farmer;
+    private final MyFarmGUI gui;
+    private final MyFarm myFarm;
+    private final Farmer farmer;
     private String selected = "";
 
     /**
