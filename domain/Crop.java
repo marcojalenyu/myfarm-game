@@ -94,6 +94,14 @@ public class Crop {
             timesFertilized++;
     }
 
+    public boolean isWateredEnough() {
+        return timesWatered >= waterNeeded;
+    }
+
+    public boolean isFertilizedEnough() {
+        return timesFertilized >= fertilizerNeeded;
+    }
+
     /**
      Getters and Setters:
      */
@@ -150,4 +158,3 @@ public class Crop {
         this.cropState = cropState;
     }
 }
-

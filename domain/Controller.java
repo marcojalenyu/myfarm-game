@@ -71,30 +71,22 @@ public class Controller implements ActionListener{
                         switch(crop.getCropState()) {
 
                             case CropStates.GROWING:
-                                boolean enoughWater = false;
-                                boolean enoughFertilizer = false;
-
-                                if(crop.getTimesWatered() >= crop.getWaterNeeded())
-                                    enoughWater = true;
-                                if(crop.getTimesFertilized() >= crop.getFertilizerNeeded())
-                                    enoughFertilizer = true;
-
                                 if (crop.getType().equals(CropType.FRUIT_TREE)){
-                                    if (enoughWater && enoughFertilizer)
+                                    if (crop.isWateredEnough() && crop.isFertilizedEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
-                                    else if (enoughWater)
+                                    else if (crop.isWateredEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
-                                    else if (enoughFertilizer)
+                                    else if (crop.isFertilizedEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
                                     else
                                         tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
                                 }
                                 else {
-                                    if (enoughWater && enoughFertilizer)
+                                    if (crop.isWateredEnough() && crop.isFertilizedEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
-                                    else if (enoughWater)
+                                    else if (crop.isWateredEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
-                                    else if (enoughFertilizer)
+                                    else if (crop.isFertilizedEnough())
                                         tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
                                     else
                                         tileIcon.setIcon(new ImageIcon("assets/growingPlant.jpg"));
