@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
@@ -67,6 +69,19 @@ public class Crop {
         else if(this.harvestTime < 0) {
             cropState = CropStates.WITHERED;
         }
+    }
+
+    public double computeHarvestPrice(int earnBonus) {
+
+        double harvestTotal = productYield * (basePrice + earnBonus);
+        double waterBonus = harvestTotal * 0.2 * (timesWatered - 1);
+        double fertilizerBonus = harvestTotal * 0.5 * timesFertilized;
+        double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
+
+        if (type.equals(CropType.FLOWER))
+            finalHarvestPrice *= 1.1;
+
+        return finalHarvestPrice;
     }
 
     /**

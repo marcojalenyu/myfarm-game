@@ -182,14 +182,8 @@ public class Farmer {
     public void harvest(Tile tile) {
         Crop crop = tile.getCrop();
 
-        if(crop.getCropState() == CropStates.HARVESTABLE) {
-            double harvestTotal = crop.getProductYield()*(crop.getBasePrice()+earnBonus);
-            double waterBonus = harvestTotal*0.2*(crop.getTimesWatered()-1);
-            double fertilizerBonus = harvestTotal*0.5*crop.getTimesFertilized();
-            double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
-
-            if(crop.getType().equals(CropType.FLOWER))
-                finalHarvestPrice *= 1.1;
+        if (crop != null && crop.getCropState() == CropStates.HARVESTABLE) {
+            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus);
 
             JOptionPane.showMessageDialog(null, "Products Produced: "
                                             + crop.getProductYield() + " "
