@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
@@ -20,18 +18,18 @@ public class Crop {
      12. basePrice: holds base selling price per piece
      13. isWithered: holds value determining if it is withered
      */
-    private String seed;
-    private CropType type;
+    private final String seed;
+    private final CropType type;
     private int harvestTime;
     private int timesWatered;
-    private int waterNeeded;
-    private int waterBonusLimit;
+    private final int waterNeeded;
+    private final int waterBonusLimit;
     private int timesFertilized;
-    private int fertilizerNeeded;
-    private int fertilizerBonusLimit;
-    private int productYield;
-    private double experienceYield;
-    private double basePrice;
+    private final int fertilizerNeeded;
+    private final int fertilizerBonusLimit;
+    private final int productYield;
+    private final double experienceYield;
+    private final double basePrice;
     private CropStates cropState = CropStates.GROWING;
 
     /**
