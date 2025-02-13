@@ -45,8 +45,8 @@ public class Controller implements ActionListener{
         gui.getDay().setText("Day " + myFarm.getDay());
 
         // For updating the tiles images:
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
                 Tile tile = myFarm.getTile(i, j);
                 JButton tileIcon = gui.getTile(i, j);
 
@@ -206,13 +206,13 @@ public class Controller implements ActionListener{
 
             deselect();
 
-            for (int i = 0; i < 5; i++) {
-                for (int j = 0; j < 10; j++) {
+            for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+                for (int j = 0; j < Constants.FARM_LENGTH; j++) {
 
                     Tile tile = myFarm.getTile(i, j);
                     Crop crop = tile.getCrop();
 
-                    if (button.equals(String.valueOf(i * 10 + j))) {
+                    if (button.equals(String.valueOf(i * Constants.FARM_LENGTH + j))) {
                         switch(selected) {
                             case "Plow":
                                 farmer.plow(tile);
