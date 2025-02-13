@@ -30,12 +30,13 @@ public class Crop {
     private final int productYield;
     private final double experienceYield;
     private final double basePrice;
+    private final int seedCost;
     private CropStates cropState = CropStates.GROWING;
 
     /**
      Constructor of Crop initializes the seed planted on a tile.
      */
-    public Crop(String seed, CropType type, int harvestTime, int waterNeeded, int waterBonusLimit, int fertilizerNeeded, int fertilizerBonusLimit, int productYield, double experienceYield, double basePrice) {
+    public Crop(String seed, CropType type, int harvestTime, int waterNeeded, int waterBonusLimit, int fertilizerNeeded, int fertilizerBonusLimit, int productYield, double experienceYield, double basePrice, int seedCost) {
         this.seed = seed;
         this.type = type;
         this.harvestTime = harvestTime;
@@ -48,6 +49,7 @@ public class Crop {
         this.productYield = productYield;
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
+        this.seedCost = seedCost;
     }
 
     /**
@@ -75,9 +77,7 @@ public class Crop {
         double waterBonus = harvestTotal * 0.2 * (timesWatered - 1);
         double fertilizerBonus = harvestTotal * 0.5 * timesFertilized;
         double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
-
-        if (type.equals(CropType.FLOWER))
-            finalHarvestPrice *= 1.1;
+        finalHarvestPrice *= type.getHarvestMultiplier();
 
         return finalHarvestPrice;
     }
@@ -117,5 +117,8 @@ public class Crop {
     }
     public CropStates getCropState() {
         return cropState;
+    }
+    public int getSeedCost() {
+        return seedCost;
     }
 }
