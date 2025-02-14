@@ -1,7 +1,13 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+// import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +58,21 @@ public class MyFarmGUI extends JFrame {
         label.setForeground(Color.BLACK);
         label.setFont(new Font("Minecraft",NORMAL, 15));
         return label;
+    }
+
+    private JPanel createPlantsTab(List<String> seedNames) {
+        JPanel plantsTab =  new JPanel();
+        plantsTab.setBackground(Color.decode("#a18a77"));
+            
+        for (String seedName: seedNames) {
+            Icon icon = new ImageIcon("assets/" + seedName + ".png");
+            JButton button = new JButton(icon);
+            button.setName(seedName);
+            button.setPreferredSize( new Dimension(50,50));
+            plantsTab.add(button);
+        }
+        return plantsTab;
+
     }
 
     private void init(){
@@ -188,62 +209,16 @@ public class MyFarmGUI extends JFrame {
             }
 
         }
+
         centerPanel.add(upperTiles, BorderLayout.NORTH);
         centerPanel.add(lowerTiles, BorderLayout.CENTER);
 
-        JPanel plantsTab =  new JPanel();
-        plantsTab.setBackground(Color.decode("#a18a77"));
+        List<String> SEED_NAMES = List.of(
+            "Turnip", "Carrot", "Potato", "Rose", "Tulip", "Sunflower", "Mango", "Apple"
+        );
+        JPanel plantsTab =  createPlantsTab(SEED_NAMES);
 
-        Icon turnipIcon = new ImageIcon("assets/Turnip.png");
-        JButton turnip = new JButton(turnipIcon);
-        turnip.setName("turnip");
-        turnip.setPreferredSize( new Dimension(50,50));
-        seeds.add(turnip);
 
-        Icon carrotIcon = new ImageIcon("assets/Carrot.png");
-        JButton carrot= new JButton(carrotIcon);
-        carrot.setName("carrot");
-        carrot.setPreferredSize( new Dimension(50,50));
-        seeds.add(carrot);
-
-        Icon potatoIcon = new ImageIcon("assets/Potato.png");
-        JButton potato= new JButton(potatoIcon);
-        potato.setName("potato");
-        potato.setPreferredSize( new Dimension(50,50));
-        seeds.add(potato);
-
-        Icon roseIcon = new ImageIcon("assets/Rose.png");
-        JButton rose = new JButton(roseIcon);
-        rose.setName("rose");
-        rose.setPreferredSize( new Dimension(50,50));
-        seeds.add(rose);
-
-        Icon tulipIcon = new ImageIcon("assets/Tulip.png");
-        JButton tulip = new JButton(tulipIcon);
-        tulip.setName("tulip");
-        tulip.setPreferredSize( new Dimension(50,50));
-        seeds.add(tulip);
-
-        Icon sunflowerIcon = new ImageIcon("assets/Sunflower.png");
-        JButton sunflower= new JButton(sunflowerIcon);
-        sunflower.setName("sunflower");
-        sunflower.setPreferredSize( new Dimension(50,50));
-        seeds.add(sunflower);
-
-        Icon mangoIcon = new ImageIcon("assets/Mango.png");
-        JButton mango = new JButton(mangoIcon);
-        mango.setName("mango");
-        mango.setPreferredSize( new Dimension(50,50));
-        seeds.add(mango);
-
-        Icon appleIcon = new ImageIcon("assets/Apple.png");
-        JButton apple = new JButton(appleIcon);
-        apple.setName("apple");;
-        apple.setPreferredSize( new Dimension(50,50));
-        seeds.add(apple);
-
-        for(JButton b : seeds)
-            plantsTab.add(b);
 
         centerPanel.add(plantsTab, BorderLayout.SOUTH);
         this.add(centerPanel, BorderLayout.CENTER);
