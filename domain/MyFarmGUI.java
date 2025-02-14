@@ -46,6 +46,14 @@ public class MyFarmGUI extends JFrame {
     private JLabel farmerType;
     private JLabel day;
 
+    private JLabel createBlackMinecraftJLabel (String labelText) {
+        JLabel label = new JLabel();
+        label.setText(labelText);
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Minecraft",NORMAL, 15));
+        return label;
+    }
+
     private void init(){
 
         // NORTH PANEL
@@ -72,41 +80,33 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanelLeft.setBorder(new EmptyBorder(0,150,0,0));
         farmerInfoPanelLeft.setBackground(Color.decode("#abd7d8"));
         farmerInfoPanelLeft.setLayout(new BorderLayout());
+
         // sub sub sub panel Wallet and Level
             JPanel farmerInfoPanelLeftUp = new JPanel();
             farmerInfoPanelLeftUp.setLayout(new BorderLayout());
             farmerInfoPanelLeftUp.setBackground(Color.decode("#abd7d8"));
-                wallet = new JLabel();
-                wallet.setText("Wallet: " );
-                wallet.setForeground(Color.BLACK);
-                wallet.setFont(new Font("Minecraft",NORMAL, 15));
+
+                wallet = createBlackMinecraftJLabel("Wallet: " );
                 farmerInfoPanelLeftUp.add(wallet, BorderLayout.NORTH);
 
-                level = new JLabel();
-                level.setText("Level: ");
-                level.setForeground(Color.BLACK);
-                level.setFont(new Font("Minecraft",NORMAL, 15));
+                level = createBlackMinecraftJLabel("Level: ");
                 farmerInfoPanelLeftUp.add(level, BorderLayout.SOUTH);
+
             farmerInfoPanelLeft.add(farmerInfoPanelLeftUp, BorderLayout.NORTH);
 
             //sub sub sub panel Experience and Type
             JPanel farmerInfoPanelLeftDown = new JPanel();
             farmerInfoPanelLeftDown.setLayout(new BorderLayout());
             farmerInfoPanelLeftDown.setBackground(Color.decode("#abd7d8"));
-                experience = new JLabel();
-                experience.setText("Experience: ");
-                experience.setForeground(Color.BLACK);
-                experience.setFont(new Font("Minecraft",NORMAL, 15));
+
+                experience = createBlackMinecraftJLabel("Experience: ");
                 farmerInfoPanelLeftDown.add(experience, BorderLayout.NORTH);
 
-                farmerType = new JLabel();
-                farmerType.setText(" Type: ");
-                farmerType.setForeground(Color.BLACK);
-                farmerType.setFont(new Font("Minecraft",NORMAL, 15));
+                farmerType = createBlackMinecraftJLabel(" Type: ");
                 farmerInfoPanelLeftDown.add(farmerType, BorderLayout.SOUTH);
+
             farmerInfoPanelLeft.add(farmerInfoPanelLeftDown, BorderLayout.SOUTH);
         farmerInfoPanel.add(farmerInfoPanelLeft, BorderLayout.WEST);
-
 
         JPanel farmerInfoPanelCenter = new JPanel();
         farmerInfoPanelCenter.setBackground(Color.decode("#abd7d8"));
@@ -117,11 +117,8 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanelRight.setLayout(new BorderLayout());
         farmerInfoPanelRight.setBackground(Color.decode("#abd7d8"));
 
-        day = new JLabel();
-        day.setForeground(Color.BLACK);
-        day.setFont(new Font("Minecraft",NORMAL, 15));
+        day = createBlackMinecraftJLabel("");
         farmerInfoPanelRight.add(day, BorderLayout.NORTH);
-
 
         farmerInfoPanel.add(farmerInfoPanelRight, BorderLayout.EAST);
         panelNorth.add(farmerInfoPanel, BorderLayout.SOUTH);
