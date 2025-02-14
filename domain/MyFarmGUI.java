@@ -60,51 +60,7 @@ public class MyFarmGUI extends JFrame {
         return label;
     }
 
-    private JPanel createPlantsJPanel(List<String> seedNames) {
-        JPanel plantsTab =  new JPanel();
-        plantsTab.setBackground(Color.decode("#a18a77"));
-            
-        for (String seedName: seedNames) {
-            Icon icon = new ImageIcon("assets/" + seedName + ".png");
-            JButton button = new JButton(icon);
-            button.setName(seedName);
-            button.setPreferredSize( new Dimension(50,50));
-            seeds.add(button);
-            plantsTab.add(button);
-        }
-        return plantsTab;
-    }
-
-    private JPanel createActionsJPanel(List<String> actionNames) {
-        JPanel actionsTab = new JPanel();
-        actionsTab.setBackground(Color.decode("#abd7d8"));
-        for (String actionName: actionNames) {
-            JButton button = new JButton(actionName);
-            button.setName(actionName);
-            actions.add(button);
-            actionsTab.add(button, BorderLayout.NORTH);
-        }
-        return actionsTab;
-    }
-
-    private void init(){
-
-        // NORTH PANEL
-        JPanel panelNorth = new JPanel();
-        panelNorth.setLayout(new BorderLayout());
-
-        // sub panel  Game Title
-        JPanel gameTitlePanel = new JPanel();
-        gameTitlePanel.setLayout(new GridBagLayout());
-        gameTitlePanel.setBackground(Color.decode("#abd7d8"));
-
-        JLabel gameTitle = new JLabel();
-        gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
-
-        gameTitlePanel.add(gameTitle);
-        panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
-
-        //sub panel Farmer Information
+    private JPanel createFarmerInfoPanel() {
         JPanel farmerInfoPanel = new JPanel();
         farmerInfoPanel.setLayout(new BorderLayout());
 
@@ -154,6 +110,55 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanelRight.add(day, BorderLayout.NORTH);
 
         farmerInfoPanel.add(farmerInfoPanelRight, BorderLayout.EAST);
+        return farmerInfoPanel;
+    }
+
+    private JPanel createPlantsJPanel(List<String> seedNames) {
+        JPanel plantsTab =  new JPanel();
+        plantsTab.setBackground(Color.decode("#a18a77"));
+            
+        for (String seedName: seedNames) {
+            Icon icon = new ImageIcon("assets/" + seedName + ".png");
+            JButton button = new JButton(icon);
+            button.setName(seedName);
+            button.setPreferredSize( new Dimension(50,50));
+            seeds.add(button);
+            plantsTab.add(button);
+        }
+        return plantsTab;
+    }
+
+    private JPanel createActionsJPanel(List<String> actionNames) {
+        JPanel actionsTab = new JPanel();
+        actionsTab.setBackground(Color.decode("#abd7d8"));
+        for (String actionName: actionNames) {
+            JButton button = new JButton(actionName);
+            button.setName(actionName);
+            actions.add(button);
+            actionsTab.add(button, BorderLayout.NORTH);
+        }
+        return actionsTab;
+    }
+
+    private void init(){
+
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new BorderLayout());
+
+        // sub panel  Game Title
+        JPanel gameTitlePanel = new JPanel();
+        gameTitlePanel.setLayout(new GridBagLayout());
+        gameTitlePanel.setBackground(Color.decode("#abd7d8"));
+
+        JLabel gameTitle = new JLabel();
+        gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
+
+        gameTitlePanel.add(gameTitle);
+        panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
+
+        //sub panel Farmer Information
+        JPanel farmerInfoPanel = createFarmerInfoPanel();
         panelNorth.add(farmerInfoPanel, BorderLayout.SOUTH);
         this.add(panelNorth, BorderLayout.NORTH);
 
@@ -229,14 +234,12 @@ public class MyFarmGUI extends JFrame {
             "Turnip", "Carrot", "Potato", "Rose", 
             "Tulip", "Sunflower", "Mango", "Apple"
         );
-
         JPanel plantsTab =  createPlantsJPanel(SEED_NAMES);
-
         centerPanel.add(plantsTab, BorderLayout.SOUTH);
+
         this.add(centerPanel, BorderLayout.CENTER);
 
         //SOUTH PANEL
-
         final List<String> ACTION_NAMES = List.of(
             "Plow", "Water", "Fertilizer", "Harvest", 
             "Shovel", "Pickaxe", "Register", "End Day"
