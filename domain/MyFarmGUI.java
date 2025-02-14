@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-// import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -58,6 +57,18 @@ public class MyFarmGUI extends JFrame {
         label.setForeground(Color.BLACK);
         label.setFont(new Font("Minecraft",NORMAL, 15));
         return label;
+    }
+
+    private JPanel createGameTitlePanel() {
+        JPanel gameTitlePanel = new JPanel();
+        gameTitlePanel.setLayout(new GridBagLayout());
+        gameTitlePanel.setBackground(Color.decode("#abd7d8"));
+
+        JLabel gameTitle = new JLabel();
+        gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
+
+        gameTitlePanel.add(gameTitle);
+        return gameTitlePanel;
     }
 
     private JPanel createFarmerInfoPanel() {
@@ -141,20 +152,12 @@ public class MyFarmGUI extends JFrame {
     }
 
     private void init(){
-
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
         panelNorth.setLayout(new BorderLayout());
 
         // sub panel  Game Title
-        JPanel gameTitlePanel = new JPanel();
-        gameTitlePanel.setLayout(new GridBagLayout());
-        gameTitlePanel.setBackground(Color.decode("#abd7d8"));
-
-        JLabel gameTitle = new JLabel();
-        gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
-
-        gameTitlePanel.add(gameTitle);
+        JPanel gameTitlePanel = createGameTitlePanel();
         panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
 
         //sub panel Farmer Information
@@ -163,7 +166,6 @@ public class MyFarmGUI extends JFrame {
         this.add(panelNorth, BorderLayout.NORTH);
 
         //CENTER PANEL
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
         centerPanel.setBackground(Color.decode("#a18a77"));
