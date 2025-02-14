@@ -252,9 +252,9 @@ public class MyFarmGUI extends JFrame {
      * @param listener: used to catch inputs
      */
     public void setActionListener(ActionListener listener) {
-        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-                tiles[i][j].addActionListener(listener);
+        for (JButton[] jButtonArray: tiles)  {
+            for (JButton button: jButtonArray) {
+                button.addActionListener(listener);
             }
         }
 
