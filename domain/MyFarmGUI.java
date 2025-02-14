@@ -124,6 +124,28 @@ public class MyFarmGUI extends JFrame {
         return farmerInfoPanel;
     }
 
+    private JPanel[] createTillRowJPanelArray() {
+        final int NUMBER_OF_ROWS = 5;
+        JPanel[] rowArray = new JPanel[NUMBER_OF_ROWS];
+
+        for (int i = 0; i < NUMBER_OF_ROWS; i++) {
+            rowArray[i] = new JPanel();
+            rowArray[i].setBackground(Color.decode("#a18a77"));
+        }
+
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                tiles[i][j] = new JButton();
+                tiles[i][j].setName(String.valueOf(i*10+j));
+                tiles[i][j].setIcon(new ImageIcon("unplowed.jpg"));
+                tiles[i][j].setPreferredSize(new Dimension(50, 50));
+
+                rowArray[i].add(tiles[i][j]);
+            }
+        }
+        return rowArray;
+    }
+
     private JPanel createPlantsJPanel(List<String> seedNames) {
         JPanel plantsTab =  new JPanel();
         plantsTab.setBackground(Color.decode("#a18a77"));
@@ -177,57 +199,12 @@ public class MyFarmGUI extends JFrame {
         JPanel lowerTiles = new JPanel();
         lowerTiles.setLayout(new BorderLayout());
 
-        JPanel row0 = new JPanel();
-        row0.setBackground(Color.decode("#a18a77"));
-
-        JPanel row1 = new JPanel();
-        row1.setBackground(Color.decode("#a18a77"));
-
-        JPanel row2 = new JPanel();
-        row2.setBackground(Color.decode("#a18a77"));
-
-        JPanel row3 = new JPanel();
-        row3.setBackground(Color.decode("#a18a77"));
-
-        JPanel row4 = new JPanel();
-        row4.setBackground(Color.decode("#a18a77"));
-
-        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-
-                tiles[i][j] = new JButton();
-                tiles[i][j].setName(String.valueOf(i*10+j));
-                tiles[i][j].setIcon(new ImageIcon("unplowed.jpg"));
-                tiles[i][j].setPreferredSize(new Dimension(50, 50));
-
-                if (i == 0){
-                    row0.add(tiles[i][j]);
-                    upperTiles.add(row0, BorderLayout.NORTH);
-                }
-
-                if (i == 1){
-                    row1.add(tiles[i][j]);
-                    upperTiles.add(row1, BorderLayout.CENTER);
-                }
-
-                if (i == 2){
-                    row2.add(tiles[i][j]);
-                    upperTiles.add(row2, BorderLayout.SOUTH);
-                }
-
-                if (i == 3){
-                    row3.add(tiles[i][j]);
-                    lowerTiles.add(row3, BorderLayout.NORTH);
-                }
-
-                if (i == 4){
-                    row4.add(tiles[i][j]);
-                    lowerTiles.add(row4, BorderLayout.CENTER);
-                }
-
-            }
-
-        }
+        JPanel[] tillRowArray = createTillRowJPanelArray();
+        upperTiles.add(tillRowArray[0], BorderLayout.NORTH);
+        upperTiles.add(tillRowArray[1], BorderLayout.CENTER);
+        upperTiles.add(tillRowArray[2], BorderLayout.SOUTH);
+        lowerTiles.add(tillRowArray[3], BorderLayout.NORTH);
+        lowerTiles.add(tillRowArray[4], BorderLayout.CENTER);
 
         centerPanel.add(upperTiles, BorderLayout.NORTH);
         centerPanel.add(lowerTiles, BorderLayout.CENTER);
