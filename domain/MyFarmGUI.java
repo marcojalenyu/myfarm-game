@@ -60,7 +60,7 @@ public class MyFarmGUI extends JFrame {
         return label;
     }
 
-    private JPanel createPlantsTab(List<String> seedNames) {
+    private JPanel createPlantsJPanel(List<String> seedNames) {
         JPanel plantsTab =  new JPanel();
         plantsTab.setBackground(Color.decode("#a18a77"));
             
@@ -69,10 +69,22 @@ public class MyFarmGUI extends JFrame {
             JButton button = new JButton(icon);
             button.setName(seedName);
             button.setPreferredSize( new Dimension(50,50));
+            seeds.add(button);
             plantsTab.add(button);
         }
         return plantsTab;
+    }
 
+    private JPanel createActionsJPanel(List<String> actionNames) {
+        JPanel actionsTab = new JPanel();
+        actionsTab.setBackground(Color.decode("#abd7d8"));
+        for (String actionName: actionNames) {
+            JButton button = new JButton(actionName);
+            button.setName(actionName);
+            actions.add(button);
+            actionsTab.add(button, BorderLayout.NORTH);
+        }
+        return actionsTab;
     }
 
     private void init(){
@@ -213,60 +225,26 @@ public class MyFarmGUI extends JFrame {
         centerPanel.add(upperTiles, BorderLayout.NORTH);
         centerPanel.add(lowerTiles, BorderLayout.CENTER);
 
-        List<String> SEED_NAMES = List.of(
-            "Turnip", "Carrot", "Potato", "Rose", "Tulip", "Sunflower", "Mango", "Apple"
+        final List<String> SEED_NAMES = List.of(
+            "Turnip", "Carrot", "Potato", "Rose", 
+            "Tulip", "Sunflower", "Mango", "Apple"
         );
-        JPanel plantsTab =  createPlantsTab(SEED_NAMES);
 
-
+        JPanel plantsTab =  createPlantsJPanel(SEED_NAMES);
 
         centerPanel.add(plantsTab, BorderLayout.SOUTH);
         this.add(centerPanel, BorderLayout.CENTER);
 
         //SOUTH PANEL
 
-        JPanel southPanel =  new JPanel();
-        southPanel.setBackground(Color.decode("#abd7d8"));
+        final List<String> ACTION_NAMES = List.of(
+            "Plow", "Water", "Fertilizer", "Harvest", 
+            "Shovel", "Pickaxe", "Register", "End Day"
+        );
 
-        JButton plow = new JButton("Plow");
-        plow.setName("Plow");
-
-        JButton water = new JButton("Water");
-        water.setName("Water");
-
-        JButton fertilizer = new JButton("Fertilizer");
-        fertilizer.setName("Fertilizer");
-
-        JButton harvest = new JButton("Harvest");
-        harvest.setName("Harvest");
-
-        JButton shovel = new JButton("Shovel");
-        shovel.setName("Shovel");
-
-        JButton pickaxe = new JButton("Pickaxe");
-        pickaxe.setName("Pickaxe");
-
-        JButton register = new JButton("Register");
-        register.setName("Register");
-
-        JButton endDay = new JButton("End Day");
-        endDay.setName("End Day");
-
-        actions.add(plow);
-        actions.add(water);
-        actions.add(fertilizer);
-        actions.add(harvest);
-        actions.add(shovel);
-        actions.add(pickaxe);
-        actions.add(register);
-        actions.add(endDay);
-
-        for(JButton b : actions)
-            southPanel.add(b, BorderLayout.NORTH);
-
+        JPanel southPanel = createActionsJPanel(ACTION_NAMES);
 
         this.add(southPanel, BorderLayout.SOUTH);
-
     }
 
     /**
@@ -285,7 +263,6 @@ public class MyFarmGUI extends JFrame {
 
         for(JButton b : seeds)
             b.addActionListener(listener);
-
     }
 
     /**
