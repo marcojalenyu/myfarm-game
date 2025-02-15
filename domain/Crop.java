@@ -9,25 +9,26 @@ public class Crop {
      3. harvestTime: holds the days before it is ready for harvest
      4. timesWatered: holds the number of times it has been watered within the limit
      5. waterNeeded: holds the minimum times of watering needed before harvest
-     6. waterBonusLimit: holds the maximum amount of watering needed before harvest
-     7. timesFertilized: holds the number of times it has been fertilized within the limit
-     8. fertilizerNeeded: holds the minimum times of fertilizing needed before harvest
-     9. fertilizerBonusLimit: holds the maximum amount of fertilizing needed before harvest
-     10. productYield: holds the products produced when harvested
+     6. timesFertilized: holds the number of times it has been fertilized within the limit
+     7. fertilizerNeeded: holds the minimum times of fertilizing needed before harvest
+     8. minYield: holds the minimum number of products produced when harvested
+     9. maxYield: holds the maximum number of products produced when harvested
+     10. finalYield: holds the final number of products produced when harvested
      11. experienceYield: holds the experience produced when harvested
      12. basePrice: holds base selling price per piece
-     13. isWithered: holds value determining if it is withered
+     13. seedCost: holds the cost of the seed
+     14. cropState: holds the current state of the crop
      */
     private final String seed;
     private final CropType type;
     private int harvestTime;
     private int timesWatered;
     private final int waterNeeded;
-    private final int waterBonusLimit;
     private int timesFertilized;
     private final int fertilizerNeeded;
-    private final int fertilizerBonusLimit;
-    private final int productYield;
+    private final int minYield;
+    private final int maxYield;
+    private int finalYield;
     private final double experienceYield;
     private final double basePrice;
     private final int seedCost;
@@ -36,17 +37,17 @@ public class Crop {
     /**
      Constructor of Crop initializes the seed planted on a tile.
      */
-    public Crop(String seed, CropType type, int harvestTime, int waterNeeded, int waterBonusLimit, int fertilizerNeeded, int fertilizerBonusLimit, int productYield, double experienceYield, double basePrice, int seedCost) {
+    public Crop(String seed, CropType type, int harvestTime, int waterNeeded, int fertilizerNeeded, int minYield, int maxYield, double experienceYield, double basePrice, int seedCost) {
         this.seed = seed;
         this.type = type;
         this.harvestTime = harvestTime;
         this.timesWatered = Constants.START_TIMES_WATERED;
         this.waterNeeded = waterNeeded;
-        this.waterBonusLimit = waterBonusLimit;
         this.timesFertilized = Constants.START_TIMES_FERTILIZED;
         this.fertilizerNeeded = fertilizerNeeded;
-        this.fertilizerBonusLimit = fertilizerBonusLimit;
-        this.productYield = productYield;
+        this.minYield = minYield;
+        this.maxYield = maxYield;
+        this.finalYield = 0;
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
         this.seedCost = seedCost;
@@ -71,10 +72,23 @@ public class Crop {
         }
     }
 
-    public double computeHarvestPrice(int earnBonus) {
+    public int getFinalYield() {
+        finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
+        return finalYield;
+    }
 
-        double harvestTotal = productYield * (basePrice + earnBonus);
+    public double computeHarvestPrice(int earnBonus, int waterLimitIncrease, int fertilizerLimitIncrease) {
+
+        double harvestTotal = finalYield * (basePrice + earnBonus);
+
+        if (timesWatered > waterLimitIncrease) {
+            timesWatered = waterLimitIncrease;
+        }
         double waterBonus = harvestTotal * 0.2 * (timesWatered - 1);
+
+        if (timesFertilized > fertilizerLimitIncrease) {
+            timesFertilized = fertilizerLimitIncrease;
+        }
         double fertilizerBonus = harvestTotal * 0.5 * timesFertilized;
         double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
         finalHarvestPrice *= type.getHarvestMultiplier();
@@ -83,13 +97,11 @@ public class Crop {
     }
 
     public void water() {
-        if (timesWatered < waterBonusLimit)
-            timesWatered++;
+        timesWatered++;
     }
 
     public void fertilize() {
-        if (timesFertilized < fertilizerBonusLimit)
-            timesFertilized++;
+        timesFertilized++;
     }
 
     public boolean isWateredEnough() {
@@ -108,9 +120,6 @@ public class Crop {
     }
     public CropType getType() {
         return type;
-    }
-    public int getProductYield() {
-        return productYield;
     }
     public double getExperienceYield() {
         return experienceYield;

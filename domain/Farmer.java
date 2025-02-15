@@ -119,10 +119,11 @@ public class Farmer {
         Crop crop = tile.getCrop();
 
         if (crop != null && crop.getCropState() == CropStates.HARVESTABLE) {
-            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus);
+            int finalYield = crop.getFinalYield();
+            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
 
             JOptionPane.showMessageDialog(null, "Products Produced: "
-                                            + crop.getProductYield() + " "
+                                            + finalYield + " "
                                             + crop.getSeed() +"\nObjectcoins Earned: "
                                             + String.format("%.2f", finalHarvestPrice)
                                             + " Objectcoins", "Harvest Successful", JOptionPane.PLAIN_MESSAGE);
