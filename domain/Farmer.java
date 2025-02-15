@@ -61,12 +61,15 @@ public class Farmer {
      @param tiles - set of tiles in the plot (used to validate tree crops)
      */
     public void plant(Tile tile, String plant, Tile[][] tiles) {
-        if(tile.getTileState() == TileStates.PLOWED) {
+
+        boolean isTree = shop.getCropSeeds().get(plant).getType() == CropType.FRUIT_TREE;
+
+        if(tile.isPlantable(tile, tiles, isTree)) {
             
             Crop crop = shop.buy(plant, wallet, seedCostReduction);
 
             if(crop == null) {
-                JOptionPane.showMessageDialog(null, "Invalid seed name.", "Invalid", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Not enough Objectcoins", "Invalid", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

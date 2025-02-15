@@ -35,4 +35,8 @@ public class Shop {
     
         return crop;
     }
+
+    public Map<String, Crop> getCropSeeds() {
+        return cropSeeds;
+    }
 }
