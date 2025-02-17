@@ -205,42 +205,7 @@ public class MyFarmGUI extends JFrame {
                 break;
 
             case TileStates.PLANTED:
-                Crop crop = tile.getCrop();
-
-                switch(crop.getCropState()) {
-
-                    case CropStates.GROWING:
-                        if (crop.getType().equals(CropType.FRUIT_TREE)){
-                            if (crop.isWateredEnough() && crop.isFertilizedEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
-                            else if (crop.isWateredEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
-                            else if (crop.isFertilizedEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
-                            else
-                                tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
-                        }
-                        else {
-                            if (crop.isWateredEnough() && crop.isFertilizedEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
-                            else if (crop.isWateredEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
-                            else if (crop.isFertilizedEnough())
-                                tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
-                            else
-                                tileIcon.setIcon(new ImageIcon("assets/growingPlant.jpg"));
-                        }
-                        break;
-
-                    case CropStates.HARVESTABLE:
-                        tileIcon.setIcon(new ImageIcon("assets/"+crop.getSeed()+"Done.png"));
-                        break;
-
-                    case CropStates.WITHERED:
-                        tileIcon.setIcon(new ImageIcon("assets/withered.jpg"));
-                        break;
-
-                }
+                tileIcon.setIcon(new ImageIcon(tile.getCropIcon()));
                 break;
         }
     }
