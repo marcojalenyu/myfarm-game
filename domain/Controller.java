@@ -62,74 +62,80 @@ public class Controller implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         String button = ((JButton) e.getSource()).getName();
-
-        if (selected.isEmpty()) {
-            switch(button) {
-                case "End Day":
-                    if (!myFarm.isGameOver()) {
-                        myFarm.advanceDay();
-                        gui.triggerDeselect();
-                    }
-                    else {
-                        int option = JOptionPane.showConfirmDialog(gui, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
-                        gui.dispose();
-                        if (option == JOptionPane.YES_OPTION) {
-                            Controller controller = new Controller(new MyFarmGUI(), new MyFarm());
+        try {
+            if (selected.isEmpty()) {
+                switch(button) {
+                    case "End Day":
+                        if (!myFarm.isGameOver()) {
+                            myFarm.advanceDay();
+                            gui.triggerDeselect();
                         }
-                    }
-                    break;
-                case "Register":
-                    if(canRegister())
-                        farmer.register();
-                    break;
-                default:
-                    selected = button;
-                    gui.triggerSelect(selected);
-                    break;
+                        else {
+                            int option = JOptionPane.showConfirmDialog(gui, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
+                            gui.dispose();
+                            if (option == JOptionPane.YES_OPTION) {
+                                Controller controller = new Controller(new MyFarmGUI(), new MyFarm());
+                            }
+                        }
+                        break;
+                    case "Register":
+                        if(canRegister()){
+                            String output = farmer.register();
+                            JOptionPane.showMessageDialog(gui, "You are now a " + output + ".", "Registration Successful", JOptionPane.PLAIN_MESSAGE);
+                        }
+                        break;
+                    default:
+                        selected = button;
+                        gui.triggerSelect(selected);
+                        break;
+                }
             }
-        }
-        else {
+            else {
 
-            gui.triggerDeselect();
+                gui.triggerDeselect();
 
-            for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-                for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+                    for (int j = 0; j < Constants.FARM_LENGTH; j++) {
 
-                    Tile tile = myFarm.getTile(i, j);
-                    Crop crop = tile.getCrop();
+                        Tile tile = myFarm.getTile(i, j);
+                        Crop crop = tile.getCrop();
 
-                    if (button.equals(String.valueOf(i * Constants.FARM_LENGTH + j))) {
-                        switch(selected) {
-                            case "Plow":
-                                farmer.plow(tile);
-                                break;
-                            case "Water":
-                                farmer.water(crop);
-                                break;
-                            case "Fertilizer":
-                                farmer.fertilize(crop);
-                                break;
-                            case "Harvest":
-                                farmer.harvest(tile);
-                                break;
-                            case "Shovel":
-                                farmer.dig(tile);
-                                break;
-                            case "Pickaxe":
-                                farmer.mine(tile);
-                                break;
-                            default:
-                                for(JButton s : gui.getSeeds())
-                                    if(selected.equals(s.getName())) {
-                                        farmer.plant(tile, s.getName(), myFarm.getTiles());
-                                    }
-                                break;
+                        if (button.equals(String.valueOf(i * Constants.FARM_LENGTH + j))) {
+                            switch(selected) {
+                                case "Plow":
+                                    farmer.plow(tile);
+                                    break;
+                                case "Water":
+                                    farmer.water(crop);
+                                    break;
+                                case "Fertilizer":
+                                    farmer.fertilize(crop);
+                                    break;
+                                case "Harvest":
+                                    String output = farmer.harvest(tile);
+                                    JOptionPane.showMessageDialog(gui, output, "Harvest Successful", JOptionPane.PLAIN_MESSAGE);
+                                    break;
+                                case "Shovel":
+                                    farmer.dig(tile);
+                                    break;
+                                case "Pickaxe":
+                                    farmer.mine(tile);
+                                    break;
+                                default:
+                                    for(JButton s : gui.getSeeds())
+                                        if(selected.equals(s.getName())) {
+                                            farmer.plant(tile, s.getName(), myFarm.getTiles());
+                                        }
+                                    break;
+                            }
                         }
                     }
                 }
-            }
 
-            selected = "";
+                selected = "";
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(gui, ex.getMessage(), "Invalid", JOptionPane.ERROR_MESSAGE);
         }
 
         gui.updateView(myFarm);
