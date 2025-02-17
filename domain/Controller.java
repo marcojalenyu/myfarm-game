@@ -174,6 +174,6 @@ public class Controller implements ActionListener{
             selected = "";
         }
 
-        updateView();
+        gui.updateView(myFarm);
     }
 }
