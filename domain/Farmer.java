@@ -46,12 +46,12 @@ public class Farmer {
      @param tile - tile that will be plowed by the farmer
      */
     public void plow(Tile tile) {
-        if(tile.getTileState() == TileStates.NOT_PLOWED) {
-            tile.setTileState(TileStates.PLOWED);
+        if (tile.plow()) {
             gainExperience(Constants.PLOWING_EXP);
         }
-        else
+        else {
             JOptionPane.showMessageDialog(null, "This tile cannot be plowed.", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

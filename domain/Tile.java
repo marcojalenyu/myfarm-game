@@ -29,6 +29,14 @@ public class Tile {
         }
     }
 
+    public boolean plow() {
+        if (this.tileState == TileStates.NOT_PLOWED) {
+            this.tileState = TileStates.PLOWED;
+            return true;
+        }
+        return false;
+    }
+
     public Crop harvest() {
         if (this.tileState == TileStates.PLANTED
                 && this.crop != null) {
