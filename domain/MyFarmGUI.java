@@ -264,6 +264,14 @@ public class MyFarmGUI extends JFrame {
             b.addActionListener(listener);
     }
 
+    public void triggerDeselect() {
+        for(JButton b : actions)
+            b.setBackground(Color.white);
+        for(JButton b : seeds)
+            b.setBackground(Color.white);
+    }
+
+
     /**
      Getters and Setters:
      */

@@ -55,16 +55,6 @@ public class Controller implements ActionListener{
     }
 
     /**
-     This function sets the backgrounds of buttons to white to show it is not selected
-     */
-    public void deselect() {
-        for(JButton b : gui.getActions())
-            b.setBackground(Color.white);
-        for(JButton b : gui.getSeeds())
-            b.setBackground(Color.white);
-    }
-
-    /**
      This function processes the inputs to the model
      @param e the event to be processed
      */
@@ -78,7 +68,7 @@ public class Controller implements ActionListener{
                 case "End Day":
                     if (!myFarm.isGameOver()) {
                         myFarm.advanceDay();
-                        deselect();
+                        gui.triggerDeselect();
                     }
                     else {
                         int option = JOptionPane.showConfirmDialog(gui, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
@@ -109,7 +99,7 @@ public class Controller implements ActionListener{
         }
         else {
 
-            deselect();
+            gui.triggerDeselect();
 
             for (int i = 0; i < Constants.FARM_WIDTH; i++) {
                 for (int j = 0; j < Constants.FARM_LENGTH; j++) {
