@@ -39,4 +39,16 @@ public class Shop {
     public Map<String, Crop> getCropSeeds() {
         return cropSeeds;
     }
+
+    public double getCheapestSeedCost() {
+        double cheapestSeed = Double.MAX_VALUE;
+
+        for (Crop crop : cropSeeds.values()) {
+            if (crop.getSeedCost() < cheapestSeed) {
+                cheapestSeed = crop.getSeedCost();
+            }
+        }
+
+        return cheapestSeed;
+    }
 }

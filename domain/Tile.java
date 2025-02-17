@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
     The Tile class contains records related to each tile in the plot.
  */
@@ -22,10 +24,23 @@ public class Tile {
      * Updates the tile and the crop inside the tile.
      */
     public void update() {
-
         if (this.tileState == TileStates.PLANTED && this.crop != null) {
             this.crop.update();
         }
+    }
+
+    public Crop harvest() {
+        if (this.tileState == TileStates.PLANTED
+                && this.crop != null) {
+            Crop harvestedCrop = this.crop;
+            this.tileState = TileStates.NOT_PLOWED;
+            this.crop = null;
+            return harvestedCrop;
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "This tile cannot be harvested.", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
     }
 
     /**
@@ -47,7 +62,6 @@ public class Tile {
     /**
      This function determines if the farmer can plant a tree on the given tile
      @param tiles - set of tiles in the plot to be used to check the 8 surrounding tiles of the given
-     @param tile - tile to be examined
      @param isTree - boolean value to determine if the crop is a tree
      */
     public boolean isPlantable(Tile[][] tiles, boolean isTree) {
