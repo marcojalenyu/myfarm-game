@@ -131,34 +131,36 @@ public class Tile {
         if (tileState == TileStates.NOT_PLOWED || tileState == TileStates.PLANTED) {
             return false;
         }
-    
-        if (isTree) {
-            int row = -1; 
-            int col = -1;
-    
-            // Locate the tile position in the grid
-            for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-                for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-                    if (tiles[i][j].equals(this)) {
-                        row = i;
-                        col = j;
-                        break;
-                    }
+
+        if (!isTree) {
+            return true;
+        }
+
+        int row = -1;
+        int col = -1;
+
+        // Locate the tile position in the grid
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                if (tiles[i][j].equals(this)) {
+                    row = i;
+                    col = j;
+                    break;
                 }
-                if (row != -1) break;
             }
-    
-            // Ensure the tree is not on the farm's border
-            if (row == 0 || row == Constants.FARM_WIDTH - 1 || col == 0 || col == Constants.FARM_LENGTH - 1) {
-                return false;
-            }
-    
-            // Check all adjacent tiles for emptiness
-            for (int i = row - 1; i <= row + 1; i++) {
-                for (int j = col - 1; j <= col + 1; j++) {
-                    if (tiles[i][j].getCrop() != null) {
-                        return false; // Adjacent tile is occupied
-                    }
+            if (row != -1) break;
+        }
+
+        // Ensure the tree is not on the farm's border
+        if (row == 0 || row == Constants.FARM_WIDTH - 1 || col == 0 || col == Constants.FARM_LENGTH - 1) {
+            return false;
+        }
+
+        // Check all adjacent tiles for emptiness
+        for (int i = row - 1; i <= row + 1; i++) {
+            for (int j = col - 1; j <= col + 1; j++) {
+                if (tiles[i][j].crop != null) {
+                    return false; // Adjacent tile is occupied
                 }
             }
         }
