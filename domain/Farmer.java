@@ -24,7 +24,7 @@ public class Farmer {
     private int seedCostReduction;
     private int waterLimitIncrease;
     private int fertilizerLimitIncrease;
-    private Shop shop;
+    private final Shop shop;
 
     /**
      Constructor of Farmer initializes with the default values in Constants.
@@ -118,25 +118,17 @@ public class Farmer {
      @param tile - tile whose crop will be harvested by the farmer
      */
     public void harvest(Tile tile) {
-        Crop crop = tile.getCrop();
-
-        if (crop != null && crop.getCropState() == CropStates.HARVESTABLE) {
-            int finalYield = crop.getFinalYield();
-            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
-
+        Crop harvestedCrop = tile.harvest();
+        if (harvestedCrop != null) {
+            harvestedCrop.getFinalYield();
+            this.wallet += harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
+            this.gainExperience(harvestedCrop.getExperienceYield());
             JOptionPane.showMessageDialog(null, "Products Produced: "
-                                            + finalYield + " "
-                                            + crop.getSeed() +"\nObjectcoins Earned: "
-                                            + String.format("%.2f", finalHarvestPrice)
+                                            + harvestedCrop.getFinalYield() + " "
+                                            + harvestedCrop.getSeed() +"\nObjectcoins Earned: "
+                                            + String.format("%.2f", harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease))
                                             + " Objectcoins", "Harvest Successful", JOptionPane.PLAIN_MESSAGE);
-
-            wallet += finalHarvestPrice;
-            gainExperience(crop.getExperienceYield());
-            tile.setTileState(TileStates.NOT_PLOWED);
-            tile.setCrop(null);
         }
-        else
-            JOptionPane.showMessageDialog(null, "This tile cannot be harvested.", "Invalid", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
