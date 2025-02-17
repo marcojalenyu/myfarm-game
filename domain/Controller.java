@@ -84,16 +84,7 @@ public class Controller implements ActionListener{
                     break;
                 default:
                     selected = button;
-
-                    for(JButton b : gui.getActions()) {
-                        if(b.getName().equals(selected))
-                            b.setBackground(Color.cyan);
-                    }
-                    for(JButton b : gui.getSeeds()) {
-                        if(b.getName().equals(selected))
-                            b.setBackground(Color.cyan);
-                    }
-
+                    gui.triggerSelect(selected);
                     break;
             }
         }

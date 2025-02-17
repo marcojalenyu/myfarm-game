@@ -271,6 +271,17 @@ public class MyFarmGUI extends JFrame {
             b.setBackground(Color.white);
     }
 
+    public void triggerSelect(String selected) {
+        for(JButton b : actions) {
+            if(b.getName().equals(selected))
+                b.setBackground(Color.cyan);
+        }
+        for(JButton b : seeds) {
+            if(b.getName().equals(selected))
+                b.setBackground(Color.cyan);
+        }
+    }
+
 
     /**
      Getters and Setters:
