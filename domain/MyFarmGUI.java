@@ -185,28 +185,8 @@ public class MyFarmGUI extends JFrame {
                 Tile tile = myFarm.getTile(i, j);
                 JButton tileIcon = tiles[i][j];
 
-                updateTile(tile, tileIcon);
+                tile.updateButton(tileIcon);
             }
-        }
-    }
-
-    private void updateTile (Tile tile, JButton tileIcon) {
-        switch(tile.getTileState()) {
-            case TileStates.ROCK:
-                tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
-                break;
-
-            case TileStates.NOT_PLOWED:
-                tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
-                break;
-
-            case TileStates.PLOWED:
-                tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
-                break;
-
-            case TileStates.PLANTED:
-                tileIcon.setIcon(new ImageIcon(tile.getCropIcon()));
-                break;
         }
     }
 

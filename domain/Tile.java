@@ -83,7 +83,27 @@ public class Tile {
         this.tileState = tileState;
     }
 
-    public String getCropIcon() {
+    public void updateButton (JButton tileIcon) {
+        switch(tileState) {
+            case TileStates.ROCK:
+                tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
+                break;
+
+            case TileStates.NOT_PLOWED:
+                tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
+                break;
+
+            case TileStates.PLOWED:
+                tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
+                break;
+
+            case TileStates.PLANTED:
+                tileIcon.setIcon(new ImageIcon(this.getCropIcon()));
+                break;
+        }
+    }
+
+    private String getCropIcon() {
         String typeString;
         if (crop.getType().equals(CropType.FRUIT_TREE)) {
             typeString = "Tree";
