@@ -29,6 +29,36 @@ public class Tile {
         }
     }
 
+    public boolean plow() {
+        if (this.tileState == TileStates.NOT_PLOWED) {
+            this.tileState = TileStates.PLOWED;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean dig() {
+        if (this.tileState == TileStates.ROCK) {
+            return false;
+        }
+        this.tileState = TileStates.NOT_PLOWED;
+        this.crop = null;
+        return true;
+    }
+
+    public boolean mine() {
+        if (this.tileState == TileStates.ROCK) {
+            this.tileState = TileStates.NOT_PLOWED;
+            return true;
+        }
+        return false;
+    }
+
+    public void plant(Crop crop) {
+        this.tileState = TileStates.PLANTED;
+        this.crop = crop;
+    }
+
     public Crop harvest() {
         if (this.tileState == TileStates.PLANTED
                 && this.crop != null) {
@@ -91,9 +121,6 @@ public class Tile {
     public Crop getCrop() {
         return crop;
     }
-    public void setCrop(Crop crop) {
-        this.crop = crop;
-    }
 
     /**
      This function determines if the farmer can plant a tree on the given tile
@@ -101,8 +128,8 @@ public class Tile {
      @param isTree - boolean value to determine if the crop is a tree
      */
     public boolean isPlantable(Tile[][] tiles, boolean isTree) {
-        if (tileState != TileStates.PLOWED || tileState == TileStates.PLANTED) {
-            return false; // Tile is not plowed or already has a crop
+        if (tileState == TileStates.NOT_PLOWED || tileState == TileStates.PLANTED) {
+            return false;
         }
     
         if (isTree) {
