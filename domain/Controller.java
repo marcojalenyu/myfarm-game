@@ -51,10 +51,7 @@ public class Controller implements ActionListener{
         int option = JOptionPane.showConfirmDialog(gui,"Do you want to be a" + farmer.getNextLevelString() + " for " + farmer.getLevelUpCost() + " Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 
-        if (option == JOptionPane.YES_OPTION)
-            return true;
-        else
-            return false;
+        return option == JOptionPane.YES_OPTION;
     }
 
     /**
