@@ -219,6 +219,10 @@ public class Farmer {
         }
     }
 
+    public boolean canAffordCheapestSeed() {
+        return wallet >= shop.getCheapestSeedCost() - seedCostReduction;
+    }
+
     /**
      Getters and Setters:
      */

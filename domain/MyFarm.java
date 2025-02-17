@@ -85,8 +85,7 @@ public class MyFarm {
                 if(this.tiles[row][col].getTileState() != TileStates.PLANTED || this.tiles[row][col].getCrop().getCropState() == CropStates.WITHERED)
                     inactiveCount++;
 
-        // TODO: Remove Magic Number
-        return this.farmer.getWallet() < 5 - this.farmer.getSeedCostReduction() &&
+        return this.farmer.canAffordCheapestSeed() &&
                 inactiveCount == this.length * this.width;
     }
 
