@@ -1,13 +1,21 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
    The MyFarmGUI class serves as the view of the program
  */
 public class MyFarmGUI extends JFrame {
+
+    private final int WINDOW_WIDTH = 900;
+    private final int WINDOW_HEIGHT = 680;
 
     /**
      Constructor of MyFarmGUI sets the icons, windows, and frames
@@ -17,7 +25,7 @@ public class MyFarmGUI extends JFrame {
         ImageIcon icon = new ImageIcon("assets/icon.png");
         setIconImage(icon.getImage());
         setLayout(new BorderLayout());
-        setSize(900, 680);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         init();
         setVisible(true);
@@ -43,13 +51,15 @@ public class MyFarmGUI extends JFrame {
     private JLabel farmerType;
     private JLabel day;
 
-    private void init(){
+    private JLabel createBlackMinecraftJLabel (String labelText) {
+        JLabel label = new JLabel();
+        label.setText(labelText);
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Minecraft",NORMAL, 15));
+        return label;
+    }
 
-        // NORTH PANEL
-        JPanel panelNorth = new JPanel();
-        panelNorth.setLayout(new BorderLayout());
-
-        // sub panel  Game Title
+    private JPanel createGameTitlePanel() {
         JPanel gameTitlePanel = new JPanel();
         gameTitlePanel.setLayout(new GridBagLayout());
         gameTitlePanel.setBackground(Color.decode("#abd7d8"));
@@ -58,9 +68,10 @@ public class MyFarmGUI extends JFrame {
         gameTitle.setIcon(new ImageIcon("assets/my-farm.png"));
 
         gameTitlePanel.add(gameTitle);
-        panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
+        return gameTitlePanel;
+    }
 
-        //sub panel Farmer Information
+    private JPanel createFarmerInfoPanel() {
         JPanel farmerInfoPanel = new JPanel();
         farmerInfoPanel.setLayout(new BorderLayout());
 
@@ -69,41 +80,33 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanelLeft.setBorder(new EmptyBorder(0,150,0,0));
         farmerInfoPanelLeft.setBackground(Color.decode("#abd7d8"));
         farmerInfoPanelLeft.setLayout(new BorderLayout());
+
         // sub sub sub panel Wallet and Level
             JPanel farmerInfoPanelLeftUp = new JPanel();
             farmerInfoPanelLeftUp.setLayout(new BorderLayout());
             farmerInfoPanelLeftUp.setBackground(Color.decode("#abd7d8"));
-                wallet = new JLabel();
-                wallet.setText("Wallet: " );
-                wallet.setForeground(Color.BLACK);
-                wallet.setFont(new Font("Minecraft",NORMAL, 15));
+
+                wallet = createBlackMinecraftJLabel("Wallet: " );
                 farmerInfoPanelLeftUp.add(wallet, BorderLayout.NORTH);
 
-                level = new JLabel();
-                level.setText("Level: ");
-                level.setForeground(Color.BLACK);
-                level.setFont(new Font("Minecraft",NORMAL, 15));
+                level = createBlackMinecraftJLabel("Level: ");
                 farmerInfoPanelLeftUp.add(level, BorderLayout.SOUTH);
+
             farmerInfoPanelLeft.add(farmerInfoPanelLeftUp, BorderLayout.NORTH);
 
             //sub sub sub panel Experience and Type
             JPanel farmerInfoPanelLeftDown = new JPanel();
             farmerInfoPanelLeftDown.setLayout(new BorderLayout());
             farmerInfoPanelLeftDown.setBackground(Color.decode("#abd7d8"));
-                experience = new JLabel();
-                experience.setText("Experience: ");
-                experience.setForeground(Color.BLACK);
-                experience.setFont(new Font("Minecraft",NORMAL, 15));
+
+                experience = createBlackMinecraftJLabel("Experience: ");
                 farmerInfoPanelLeftDown.add(experience, BorderLayout.NORTH);
 
-                farmerType = new JLabel();
-                farmerType.setText(" Type: ");
-                farmerType.setForeground(Color.BLACK);
-                farmerType.setFont(new Font("Minecraft",NORMAL, 15));
+                farmerType = createBlackMinecraftJLabel(" Type: ");
                 farmerInfoPanelLeftDown.add(farmerType, BorderLayout.SOUTH);
+
             farmerInfoPanelLeft.add(farmerInfoPanelLeftDown, BorderLayout.SOUTH);
         farmerInfoPanel.add(farmerInfoPanelLeft, BorderLayout.WEST);
-
 
         JPanel farmerInfoPanelCenter = new JPanel();
         farmerInfoPanelCenter.setBackground(Color.decode("#abd7d8"));
@@ -114,18 +117,77 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanelRight.setLayout(new BorderLayout());
         farmerInfoPanelRight.setBackground(Color.decode("#abd7d8"));
 
-        day = new JLabel();
-        day.setForeground(Color.BLACK);
-        day.setFont(new Font("Minecraft",NORMAL, 15));
+        day = createBlackMinecraftJLabel("");
         farmerInfoPanelRight.add(day, BorderLayout.NORTH);
 
-
         farmerInfoPanel.add(farmerInfoPanelRight, BorderLayout.EAST);
+        return farmerInfoPanel;
+    }
+
+    private JPanel[] createTillRowJPanelArray() {
+        final int NUMBER_OF_ROWS = 5;
+        JPanel[] rowArray = new JPanel[NUMBER_OF_ROWS];
+
+        for (int i = 0; i < NUMBER_OF_ROWS; i++) {
+            rowArray[i] = new JPanel();
+            rowArray[i].setBackground(Color.decode("#a18a77"));
+        }
+
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                tiles[i][j] = new JButton();
+                tiles[i][j].setName(String.valueOf(i*10+j));
+                tiles[i][j].setIcon(new ImageIcon("unplowed.jpg"));
+                tiles[i][j].setPreferredSize(new Dimension(50, 50));
+
+                rowArray[i].add(tiles[i][j]);
+            }
+        }
+        return rowArray;
+    }
+
+    private JPanel createPlantsJPanel(List<String> seedNames) {
+        JPanel plantsTab =  new JPanel();
+        plantsTab.setBackground(Color.decode("#a18a77"));
+            
+        for (String seedName: seedNames) {
+            Icon icon = new ImageIcon("assets/" + seedName + ".png");
+            JButton button = new JButton(icon);
+            button.setName(seedName);
+            button.setPreferredSize( new Dimension(50,50));
+            seeds.add(button);
+            plantsTab.add(button);
+        }
+        return plantsTab;
+    }
+
+    private JPanel createActionsJPanel(List<String> actionNames) {
+        JPanel actionsTab = new JPanel();
+        actionsTab.setBackground(Color.decode("#abd7d8"));
+        for (String actionName: actionNames) {
+            JButton button = new JButton(actionName);
+            button.setName(actionName);
+            actions.add(button);
+            actionsTab.add(button, BorderLayout.NORTH);
+        }
+        return actionsTab;
+    }
+
+    private void init(){
+        // NORTH PANEL
+        JPanel panelNorth = new JPanel();
+        panelNorth.setLayout(new BorderLayout());
+
+        // sub panel  Game Title
+        JPanel gameTitlePanel = createGameTitlePanel();
+        panelNorth.add(gameTitlePanel, BorderLayout.NORTH);
+
+        //sub panel Farmer Information
+        JPanel farmerInfoPanel = createFarmerInfoPanel();
         panelNorth.add(farmerInfoPanel, BorderLayout.SOUTH);
         this.add(panelNorth, BorderLayout.NORTH);
 
         //CENTER PANEL
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
         centerPanel.setBackground(Color.decode("#a18a77"));
@@ -137,161 +199,34 @@ public class MyFarmGUI extends JFrame {
         JPanel lowerTiles = new JPanel();
         lowerTiles.setLayout(new BorderLayout());
 
-        JPanel row0 = new JPanel();
-        row0.setBackground(Color.decode("#a18a77"));
+        JPanel[] tillRowArray = createTillRowJPanelArray();
+        upperTiles.add(tillRowArray[0], BorderLayout.NORTH);
+        upperTiles.add(tillRowArray[1], BorderLayout.CENTER);
+        upperTiles.add(tillRowArray[2], BorderLayout.SOUTH);
+        lowerTiles.add(tillRowArray[3], BorderLayout.NORTH);
+        lowerTiles.add(tillRowArray[4], BorderLayout.CENTER);
 
-        JPanel row1 = new JPanel();
-        row1.setBackground(Color.decode("#a18a77"));
-
-        JPanel row2 = new JPanel();
-        row2.setBackground(Color.decode("#a18a77"));
-
-        JPanel row3 = new JPanel();
-        row3.setBackground(Color.decode("#a18a77"));
-
-        JPanel row4 = new JPanel();
-        row4.setBackground(Color.decode("#a18a77"));
-
-        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-
-                tiles[i][j] = new JButton();
-                tiles[i][j].setName(String.valueOf(i*10+j));
-                tiles[i][j].setIcon(new ImageIcon("unplowed.jpg"));
-                tiles[i][j].setPreferredSize(new Dimension(50, 50));
-
-                if (i == 0){
-                    row0.add(tiles[i][j]);
-                    upperTiles.add(row0, BorderLayout.NORTH);
-                }
-
-                if (i == 1){
-                    row1.add(tiles[i][j]);
-                    upperTiles.add(row1, BorderLayout.CENTER);
-                }
-
-                if (i == 2){
-                    row2.add(tiles[i][j]);
-                    upperTiles.add(row2, BorderLayout.SOUTH);
-                }
-
-                if (i == 3){
-                    row3.add(tiles[i][j]);
-                    lowerTiles.add(row3, BorderLayout.NORTH);
-                }
-
-                if (i == 4){
-                    row4.add(tiles[i][j]);
-                    lowerTiles.add(row4, BorderLayout.CENTER);
-                }
-
-            }
-
-        }
         centerPanel.add(upperTiles, BorderLayout.NORTH);
         centerPanel.add(lowerTiles, BorderLayout.CENTER);
 
-        JPanel plantsTab =  new JPanel();
-        plantsTab.setBackground(Color.decode("#a18a77"));
-
-        Icon turnipIcon = new ImageIcon("assets/Turnip.png");
-        JButton turnip = new JButton(turnipIcon);
-        turnip.setName("turnip");
-        turnip.setPreferredSize( new Dimension(50,50));
-        seeds.add(turnip);
-
-        Icon carrotIcon = new ImageIcon("assets/Carrot.png");
-        JButton carrot= new JButton(carrotIcon);
-        carrot.setName("carrot");
-        carrot.setPreferredSize( new Dimension(50,50));
-        seeds.add(carrot);
-
-        Icon potatoIcon = new ImageIcon("assets/Potato.png");
-        JButton potato= new JButton(potatoIcon);
-        potato.setName("potato");
-        potato.setPreferredSize( new Dimension(50,50));
-        seeds.add(potato);
-
-        Icon roseIcon = new ImageIcon("assets/Rose.png");
-        JButton rose = new JButton(roseIcon);
-        rose.setName("rose");
-        rose.setPreferredSize( new Dimension(50,50));
-        seeds.add(rose);
-
-        Icon tulipIcon = new ImageIcon("assets/Tulip.png");
-        JButton tulip = new JButton(tulipIcon);
-        tulip.setName("tulip");
-        tulip.setPreferredSize( new Dimension(50,50));
-        seeds.add(tulip);
-
-        Icon sunflowerIcon = new ImageIcon("assets/Sunflower.png");
-        JButton sunflower= new JButton(sunflowerIcon);
-        sunflower.setName("sunflower");
-        sunflower.setPreferredSize( new Dimension(50,50));
-        seeds.add(sunflower);
-
-        Icon mangoIcon = new ImageIcon("assets/Mango.png");
-        JButton mango = new JButton(mangoIcon);
-        mango.setName("mango");
-        mango.setPreferredSize( new Dimension(50,50));
-        seeds.add(mango);
-
-        Icon appleIcon = new ImageIcon("assets/Apple.png");
-        JButton apple = new JButton(appleIcon);
-        apple.setName("apple");;
-        apple.setPreferredSize( new Dimension(50,50));
-        seeds.add(apple);
-
-        for(JButton b : seeds)
-            plantsTab.add(b);
-
+        final List<String> SEED_NAMES = List.of(
+            "Turnip", "Carrot", "Potato", "Rose", 
+            "Tulip", "Sunflower", "Mango", "Apple"
+        );
+        JPanel plantsTab =  createPlantsJPanel(SEED_NAMES);
         centerPanel.add(plantsTab, BorderLayout.SOUTH);
+
         this.add(centerPanel, BorderLayout.CENTER);
 
         //SOUTH PANEL
+        final List<String> ACTION_NAMES = List.of(
+            "Plow", "Water", "Fertilizer", "Harvest", 
+            "Shovel", "Pickaxe", "Register", "End Day"
+        );
 
-        JPanel southPanel =  new JPanel();
-        southPanel.setBackground(Color.decode("#abd7d8"));
-
-        JButton plow = new JButton("Plow");
-        plow.setName("Plow");
-
-        JButton water = new JButton("Water");
-        water.setName("Water");
-
-        JButton fertilizer = new JButton("Fertilizer");
-        fertilizer.setName("Fertilizer");
-
-        JButton harvest = new JButton("Harvest");
-        harvest.setName("Harvest");
-
-        JButton shovel = new JButton("Shovel");
-        shovel.setName("Shovel");
-
-        JButton pickaxe = new JButton("Pickaxe");
-        pickaxe.setName("Pickaxe");
-
-        JButton register = new JButton("Register");
-        register.setName("Register");
-
-        JButton endDay = new JButton("End Day");
-        endDay.setName("End Day");
-
-        actions.add(plow);
-        actions.add(water);
-        actions.add(fertilizer);
-        actions.add(harvest);
-        actions.add(shovel);
-        actions.add(pickaxe);
-        actions.add(register);
-        actions.add(endDay);
-
-        for(JButton b : actions)
-            southPanel.add(b, BorderLayout.NORTH);
-
+        JPanel southPanel = createActionsJPanel(ACTION_NAMES);
 
         this.add(southPanel, BorderLayout.SOUTH);
-
     }
 
     /**
@@ -299,9 +234,9 @@ public class MyFarmGUI extends JFrame {
      * @param listener: used to catch inputs
      */
     public void setActionListener(ActionListener listener) {
-        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-                tiles[i][j].addActionListener(listener);
+        for (JButton[] jButtonArray: tiles)  {
+            for (JButton button: jButtonArray) {
+                button.addActionListener(listener);
             }
         }
 
@@ -310,7 +245,6 @@ public class MyFarmGUI extends JFrame {
 
         for(JButton b : seeds)
             b.addActionListener(listener);
-
     }
 
     /**
