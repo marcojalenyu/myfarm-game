@@ -100,17 +100,17 @@ public class Farmer {
      @param crop - crop that will be fertilized by the farmer
      */
     public void fertilize(Crop crop) {
-        if(crop != null) {
-            if(wallet >= Constants.FERTILIZER_COST) {
-                crop.fertilize();
-                wallet -= Constants.FERTILIZER_COST;
-                gainExperience(Constants.FERTILIZING_EXP);
-            }
-            else
-                JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-        }
-        else
+        if (crop == null) {
             JOptionPane.showMessageDialog(null, "This tile has no crop.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (wallet < Constants.FERTILIZER_COST) {
+            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        crop.fertilize();
+        wallet -= Constants.FERTILIZER_COST;
+        gainExperience(Constants.FERTILIZING_EXP);
     }
 
     /**
