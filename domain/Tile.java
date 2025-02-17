@@ -37,6 +37,23 @@ public class Tile {
         return false;
     }
 
+    public boolean dig() {
+        if (this.tileState == TileStates.ROCK) {
+            return false;
+        }
+        this.tileState = TileStates.NOT_PLOWED;
+        this.crop = null;
+        return true;
+    }
+
+    public boolean mine() {
+        if (this.tileState == TileStates.ROCK) {
+            this.tileState = TileStates.NOT_PLOWED;
+            return true;
+        }
+        return false;
+    }
+
     public void plant(Crop crop) {
         this.tileState = TileStates.PLANTED;
         this.crop = crop;
@@ -67,9 +84,6 @@ public class Tile {
     }
     public Crop getCrop() {
         return crop;
-    }
-    public void setCrop(Crop crop) {
-        this.crop = crop;
     }
 
     /**

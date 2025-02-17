@@ -73,7 +73,7 @@ public class Farmer {
                 return;
             }
 
-            wallet -= crop.getSeedCost() - seedCostReduction;
+            this.wallet -= crop.getSeedCost() - seedCostReduction;
             tile.plant(crop);
         }
         else
@@ -134,18 +134,18 @@ public class Farmer {
      @param tile - tile will be shoveled  by the farmer
      */
     public void dig(Tile tile) {
-
-        if (tile.getTileState() == TileStates.ROCK)
-            JOptionPane.showMessageDialog(null, "This tile cannot be dug.", "Invalid", JOptionPane.ERROR_MESSAGE);
-
-        if(this.getWallet() < Constants.DIGGING_COST)
+        if(this.wallet < Constants.DIGGING_COST) {
             JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Tile is diggable and have enough money to dig
-        this.setWallet(getWallet() - Constants.DIGGING_COST);
-        gainExperience(Constants.DIGGING_EXP);
-        tile.setTileState(TileStates.NOT_PLOWED);
-        tile.setCrop(null);
+        if (tile.dig()) {
+            this.wallet -= Constants.DIGGING_COST;
+            this.gainExperience(Constants.DIGGING_EXP);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "This tile cannot be dug.", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -153,17 +153,18 @@ public class Farmer {
      @param tile - tile that will be mined by the farmer
      */
     public void mine(Tile tile) {
-
-        if (tile.getTileState() != TileStates.ROCK)
-            JOptionPane.showMessageDialog(null, "This tile cannot be mined.", "Invalid", JOptionPane.ERROR_MESSAGE);
-
-        if (this.getWallet() < Constants.MINING_COST)
+        if (this.wallet < Constants.MINING_COST) {
             JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Tile is rock and have enough money to mine
-        tile.setTileState(TileStates.NOT_PLOWED);
-        wallet -= Constants.MINING_COST;
-        gainExperience(Constants.MINING_EXP);
+        if (tile.mine()) {
+            this.wallet -= Constants.MINING_COST;
+            this.gainExperience(Constants.MINING_EXP);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "This tile cannot be mined.", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -228,8 +229,6 @@ public class Farmer {
     public int getLevel() { return level;}
     public double getExperience() { return experience;}
     public FarmerType getType() { return type;}
-    public int getSeedCostReduction() { return seedCostReduction;}
-    public void setWallet(double wallet) { this.wallet = wallet;}
     public void setBonuses(int earnBonus, int seedCostReduction, int waterLimitIncrease, int fertilizerLimitIncrease) {
         this.earnBonus = earnBonus;
         this.seedCostReduction = seedCostReduction;
