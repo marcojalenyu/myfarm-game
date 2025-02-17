@@ -286,6 +286,5 @@ public class MyFarmGUI extends JFrame {
     /**
      Getters and Setters:
      */
-    public ArrayList<JButton> getActions() { return actions;}
     public ArrayList<JButton> getSeeds() {return seeds;}
 }
