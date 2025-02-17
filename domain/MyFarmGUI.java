@@ -137,7 +137,7 @@ public class MyFarmGUI extends JFrame {
                 tiles[i][j] = new JButton();
                 tiles[i][j].setName(String.valueOf(i*10+j));
                 tiles[i][j].setIcon(new ImageIcon("unplowed.jpg"));
-                tiles[i][j].setPreferredSize(new Dimension(50, 50));
+                tiles[i][j].setPreferredSize(new Dimension(Constants.ICON_SIZE, Constants.ICON_SIZE));
 
                 rowArray[i].add(tiles[i][j]);
             }
@@ -153,7 +153,7 @@ public class MyFarmGUI extends JFrame {
             Icon icon = new ImageIcon("assets/" + seedName + ".png");
             JButton button = new JButton(icon);
             button.setName(seedName);
-            button.setPreferredSize( new Dimension(50,50));
+            button.setPreferredSize( new Dimension(Constants.ICON_SIZE, Constants.ICON_SIZE));
             seeds.add(button);
             plantsTab.add(button);
         }

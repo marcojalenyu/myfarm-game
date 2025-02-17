@@ -8,7 +8,8 @@ public class Constants {
     public static final int FARM_WIDTH = 5;
     public static final int FARM_LENGTH = 10;
     public static final int START_DAY = 1;
-
+    // GUI Constants
+    public static final int ICON_SIZE = 50;
     // Farmer Constants
     public static final double START_WALLET = 100.0;
     public static final int START_LEVEL = 0;
