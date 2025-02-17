@@ -59,15 +59,12 @@ public class Crop {
     public void update() {
         this.harvestTime--;
 
-        if(this.harvestTime == 0) {
-            if (this.timesWatered < this.waterNeeded || this.timesFertilized < this.fertilizerNeeded) {
-                cropState = CropStates.WITHERED;
-            }
-            else {
-                cropState = CropStates.HARVESTABLE;
-            }
+        if (this.harvestTime == 0
+                && this.isWateredEnough()
+                && this.isFertilizedEnough()) {
+            cropState = CropStates.HARVESTABLE;
         }
-        else if(this.harvestTime < 0) {
+        else if(this.harvestTime <= 0) {
             cropState = CropStates.WITHERED;
         }
     }
