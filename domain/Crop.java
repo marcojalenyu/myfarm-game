@@ -70,7 +70,8 @@ public class Crop {
     }
 
     public int getFinalYield() {
-        finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
+        if(finalYield == 0)
+            finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
         return finalYield;
     }
 
@@ -111,6 +112,10 @@ public class Crop {
 
     public boolean isWithered() {
         return cropState.equals(CropStates.WITHERED);
+    }
+
+    public boolean isHarvestable() {
+        return cropState.equals(CropStates.HARVESTABLE);
     }
 
     /**
