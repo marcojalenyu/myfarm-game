@@ -37,6 +37,11 @@ public class Tile {
         return false;
     }
 
+    public void plant(Crop crop) {
+        this.tileState = TileStates.PLANTED;
+        this.crop = crop;
+    }
+
     public Crop harvest() {
         if (this.tileState == TileStates.PLANTED
                 && this.crop != null) {
@@ -73,8 +78,8 @@ public class Tile {
      @param isTree - boolean value to determine if the crop is a tree
      */
     public boolean isPlantable(Tile[][] tiles, boolean isTree) {
-        if (tileState != TileStates.PLOWED || tileState == TileStates.PLANTED) {
-            return false; // Tile is not plowed or already has a crop
+        if (tileState == TileStates.NOT_PLOWED || tileState == TileStates.PLANTED) {
+            return false;
         }
     
         if (isTree) {

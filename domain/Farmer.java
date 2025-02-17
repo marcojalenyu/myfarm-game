@@ -74,9 +74,7 @@ public class Farmer {
             }
 
             wallet -= crop.getSeedCost() - seedCostReduction;
-            
-            tile.setTileState(TileStates.PLANTED);
-            tile.setCrop(crop);
+            tile.plant(crop);
         }
         else
             JOptionPane.showMessageDialog(null, "This tile cannot be planted on.", "Invalid", JOptionPane.ERROR_MESSAGE);
