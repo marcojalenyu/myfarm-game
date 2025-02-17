@@ -96,4 +96,9 @@ public class MyFarm {
     public int getDay() { return day;}
     public Tile getTile(int i, int j) { return tiles[i][j];}
     public Tile[][] getTiles() { return tiles;}
+
+    public double getFarmerWallet() {return farmer.getWallet();}
+    public int getFarmerLevel() {return farmer.getLevel();}
+    public double getFarmerExperience() {return farmer.getExperience();}
+    public FarmerType getFarmerType() {return farmer.getType();}
 }

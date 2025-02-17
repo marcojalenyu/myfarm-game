@@ -172,6 +172,75 @@ public class MyFarmGUI extends JFrame {
         return actionsTab;
     }
 
+    public void updateView(MyFarm myFarm) {
+        wallet.setText("Wallet: " + String.format("%.2f", myFarm.getFarmerWallet()));
+        level.setText("Level: " + myFarm.getFarmerLevel());
+        experience.setText("Experience: " + myFarm.getFarmerExperience());
+        farmerType.setText("Type: " + myFarm.getFarmerType());
+        day.setText("Day " + myFarm.getDay());
+
+        // For updating the tiles images:
+        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                Tile tile = myFarm.getTile(i, j);
+                JButton tileIcon = this.getTile(i, j);
+
+                switch(tile.getTileState()) {
+                    case TileStates.ROCK:
+                        tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
+                        break;
+
+                    case TileStates.NOT_PLOWED:
+                        tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
+                        break;
+
+                    case TileStates.PLOWED:
+                        tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
+                        break;
+
+                    case TileStates.PLANTED:
+                        Crop crop = tile.getCrop();
+
+                        switch(crop.getCropState()) {
+
+                            case CropStates.GROWING:
+                                if (crop.getType().equals(CropType.FRUIT_TREE)){
+                                    if (crop.isWateredEnough() && crop.isFertilizedEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/healthyTree.png"));
+                                    else if (crop.isWateredEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/wateredTree.png"));
+                                    else if (crop.isFertilizedEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/fertilizedTree.png"));
+                                    else
+                                        tileIcon.setIcon(new ImageIcon("assets/growingTree.png"));
+                                }
+                                else {
+                                    if (crop.isWateredEnough() && crop.isFertilizedEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/healthyPlant.png"));
+                                    else if (crop.isWateredEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/wateredPlant.png"));
+                                    else if (crop.isFertilizedEnough())
+                                        tileIcon.setIcon(new ImageIcon("assets/fertilizedPlant.png"));
+                                    else
+                                        tileIcon.setIcon(new ImageIcon("assets/growingPlant.jpg"));
+                                }
+                                break;
+
+                            case CropStates.HARVESTABLE:
+                                tileIcon.setIcon(new ImageIcon("assets/"+crop.getSeed()+"Done.png"));
+                                break;
+
+                            case CropStates.WITHERED:
+                                tileIcon.setIcon(new ImageIcon("assets/withered.jpg"));
+                                break;
+
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
     private void init(){
         // NORTH PANEL
         JPanel panelNorth = new JPanel();
