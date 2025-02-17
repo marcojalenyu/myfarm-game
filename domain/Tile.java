@@ -142,6 +142,14 @@ public class Tile {
         return crop;
     }
 
+    public boolean isPlanted() {
+        return tileState.equals(TileStates.PLANTED);
+    }
+
+    public boolean isWithered() {
+        return crop.isWithered();
+    }
+
     /**
      This function determines if the farmer can plant a tree on the given tile
      @param tiles - set of tiles in the plot to be used to check the 8 surrounding tiles of the given

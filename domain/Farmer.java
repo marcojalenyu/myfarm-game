@@ -62,7 +62,7 @@ public class Farmer {
      */
     public void plant(Tile tile, String plant, Tile[][] tiles) {
 
-        boolean isTree = shop.getCropSeeds().get(plant).getType() == CropType.FRUIT_TREE;
+        boolean isTree = shop.isPlantTree(plant);
 
         if(tile.isPlantable(tiles, isTree)) {
             
@@ -180,45 +180,23 @@ public class Farmer {
     }
 
     public String getNextLevelString() {
-        return type.getNextLevel(type).toString();
+        return type.getNextLevel().toString();
     }
 
     /**
      "Farmer registers" by changing FarmerType and the associated bonus
      */
     public void register() {
-        switch(type) {
-            case FARMER:
-                if(this.wallet >= 200) {
-                    this.wallet -= 200;
-                    type = FarmerType.REGISTERED_FARMER;
-                    setBonuses(1, 1, 0, 0);
-                    JOptionPane.showMessageDialog(null, "You are now a registered farmer.");
-                }
-                else
-                    JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                break;
-            case REGISTERED_FARMER:
-                if(this.wallet >= 300) {
-                    this.wallet -= 300;
-                    type = FarmerType.DISTINGUISHED_FARMER;
-                    setBonuses(2, 2, 1, 0);
-                    JOptionPane.showMessageDialog(null, "You are now a distinguished farmer.");
-                }
-                else
-                    JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                break;
-            case DISTINGUISHED_FARMER:
-                if(this.wallet >= 400) {
-                    this.wallet -= 400;
-                    type = FarmerType.LEGENDARY_FARMER;
-                    setBonuses(4, 3, 2, 1);
-                    JOptionPane.showMessageDialog(null, "You are now a legendary farmer.");
-                }
-                else
-                    JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                break;
+        if (type.equals(FarmerType.LEGENDARY_FARMER)) {
+            return;
+        } else if (wallet < type.getLevelUpCost()) {
+            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
         }
+
+        wallet -= type.getLevelUpCost();
+        type = type.getNextLevel();
+        setBonuses(type.getEarnBonus(), type.getSeedCostReduction(), type.getWaterLimitIncrease(), type.getFertilizerLimitIncrease());
+        JOptionPane.showMessageDialog(null, "You are now a " + type.toString() + ".");
     }
 
     /**

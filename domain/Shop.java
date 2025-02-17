@@ -51,4 +51,8 @@ public class Shop {
 
         return cheapestSeed;
     }
+
+    public boolean isPlantTree(String plant) {
+        return cropSeeds.get(plant).isTree();
+    }
 }

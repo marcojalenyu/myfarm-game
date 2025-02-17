@@ -109,6 +109,10 @@ public class Crop {
         return timesFertilized >= fertilizerNeeded;
     }
 
+    public boolean isWithered() {
+        return cropState.equals(CropStates.WITHERED);
+    }
+
     /**
      Getters and Setters:
      */
@@ -126,5 +130,8 @@ public class Crop {
     }
     public int getSeedCost() {
         return seedCost;
+    }
+    public boolean isTree() {
+        return type.equals(CropType.FRUIT_TREE);
     }
 }
