@@ -43,4 +43,49 @@ public class Tile {
     public void setCrop(Crop crop) {
         this.crop = crop;
     }
+
+    /**
+     This function determines if the farmer can plant a tree on the given tile
+     @param tiles - set of tiles in the plot to be used to check the 8 surrounding tiles of the given
+     @param tile - tile to be examined
+     @param isTree - boolean value to determine if the crop is a tree
+     */
+    public boolean isPlantable(Tile tile, Tile[][] tiles, boolean isTree) {
+        if (tile.getTileState() != TileStates.PLOWED || tile.getTileState() == TileStates.PLANTED) {
+            return false; // Tile is not plowed or already has a crop
+        }
+    
+        if (isTree) {
+            int row = -1; 
+            int col = -1;
+    
+            // Locate the tile position in the grid
+            for (int i = 0; i < Constants.FARM_WIDTH; i++) {
+                for (int j = 0; j < Constants.FARM_LENGTH; j++) {
+                    if (tiles[i][j].equals(tile)) {
+                        row = i;
+                        col = j;
+                        break;
+                    }
+                }
+                if (row != -1) break;
+            }
+    
+            // Ensure the tree is not on the farm's border
+            if (row == 0 || row == Constants.FARM_WIDTH - 1 || col == 0 || col == Constants.FARM_LENGTH - 1) {
+                return false;
+            }
+    
+            // Check all adjacent tiles for emptiness
+            for (int i = row - 1; i <= row + 1; i++) {
+                for (int j = col - 1; j <= col + 1; j++) {
+                    if (tiles[i][j].getCrop() != null) {
+                        return false; // Adjacent tile is occupied
+                    }
+                }
+            }
+        }
+    
+        return true;
+    }
 }

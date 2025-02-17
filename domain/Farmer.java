@@ -24,6 +24,7 @@ public class Farmer {
     private int seedCostReduction;
     private int waterLimitIncrease;
     private int fertilizerLimitIncrease;
+    private Shop shop;
 
     /**
      Constructor of Farmer initializes with the default values in Constants.
@@ -37,6 +38,7 @@ public class Farmer {
         this.seedCostReduction = Constants.START_SEED_DISCOUNT;
         this.waterLimitIncrease = Constants.START_WATER_BONUS_LIMIT;
         this.fertilizerLimitIncrease = Constants.START_FERTILIZER_BONUS_LIMIT;
+        this.shop = new Shop();
     }
 
     /**
@@ -60,83 +62,19 @@ public class Farmer {
      */
     public void plant(Tile tile, String plant, Tile[][] tiles) {
 
-        boolean hasCoins = false;
+        boolean isTree = shop.getCropSeeds().get(plant).getType() == CropType.FRUIT_TREE;
 
-        if(tile.getTileState() == TileStates.PLOWED) {
+        if(tile.isPlantable(tile, tiles, isTree)) {
+            
+            Crop crop = shop.buy(plant, wallet, seedCostReduction);
 
-            switch(plant) {
-                case "turnip":
-                    if(wallet >= 5-seedCostReduction) {
-                        tile.setCrop(new Crop("Turnip", CropType.ROOT_CROP, 2, 1, 2 + waterLimitIncrease, 0, 1 + fertilizerLimitIncrease, (int) (Math.random() * 1 + 1.5), 5.0, 6.0));
-                        wallet -= 5 - seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "carrot":
-                    if(wallet >= 10-seedCostReduction) {
-                        tile.setCrop(new Crop("Carrot", CropType.ROOT_CROP, 3, 1, 2+waterLimitIncrease,0, 1+fertilizerLimitIncrease, (int) (Math.random() * 1 + 1.5), 7.5, 9.0));
-                        wallet -= 10-seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "potato":
-                    if(wallet >= 20-seedCostReduction) {
-                        tile.setCrop(new Crop("Potato", CropType.ROOT_CROP, 5,3, 4+waterLimitIncrease, 1, 2+fertilizerLimitIncrease, (int) (Math.random() * 9 + 1.5), 12.5, 3.0));
-                        wallet -= 20-seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "rose":
-                    if(wallet >= 5-seedCostReduction) {
-                        tile.setCrop(new Crop("Rose", CropType.FLOWER, 1, 1, 2 + waterLimitIncrease, 0, 1 + fertilizerLimitIncrease, 1, 2.5, 5.0));
-                        wallet -= 5-seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "tulip":
-                    if(wallet >= 10-seedCostReduction) {
-                        tile.setCrop(new Crop("Tulip", CropType.FLOWER, 2, 2, 3+waterLimitIncrease, 0, 1+fertilizerLimitIncrease, 1, 5.0, 9.0));
-                        wallet -= 10-seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "sunflower":
-                    if(wallet >= 20-seedCostReduction) {
-                        tile.setCrop(new Crop("Sunflower", CropType.FLOWER, 3, 2, 3+waterLimitIncrease, 1, 2+fertilizerLimitIncrease, 1, 7.5, 19.0));
-                        wallet -= 20-seedCostReduction;
-                        hasCoins = true;
-                    }
-                    break;
-                case "mango":
-                    if(wallet >= 100-seedCostReduction) {
-                        hasCoins = true;
-                        if(isTreeValid(tiles, tile)) {
-                            tile.setCrop(new Crop("Mango", CropType.FRUIT_TREE, 10, 7, 7 + waterLimitIncrease, 4, 4 + fertilizerLimitIncrease, (int) (Math.random() * 10 + 5.5), 25.0, 8.0));
-                            wallet -= 100 - seedCostReduction;
-                        }
-                        else
-                            JOptionPane.showMessageDialog(null, "Not enough space.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                    }
-                    break;
-                case "apple":
-                    if(wallet >= 200-seedCostReduction) {
-                        hasCoins = true;
-                        if(isTreeValid(tiles, tile)) {
-                            tile.setCrop(new Crop("Apple", CropType.FRUIT_TREE, 10, 7, 7 + waterLimitIncrease, 5, 5 + fertilizerLimitIncrease, (int) (Math.random() * 5 + 10.5), 25.0, 5.0));
-                            wallet -= 200 - seedCostReduction;
-                        }
-                        else
-                            JOptionPane.showMessageDialog(null, "Not enough space.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                    }
-                    break;
+            if(crop == null) {
+                JOptionPane.showMessageDialog(null, "Not enough Objectcoins", "Invalid", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            if (hasCoins) {
-                tile.setTileState(TileStates.PLANTED);
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-            }
+            wallet -= crop.getSeedCost() - seedCostReduction;
+            tile.setCrop(crop);
         }
         else
             JOptionPane.showMessageDialog(null, "This tile cannot be planted on.", "Invalid", JOptionPane.ERROR_MESSAGE);
@@ -181,10 +119,11 @@ public class Farmer {
         Crop crop = tile.getCrop();
 
         if (crop != null && crop.getCropState() == CropStates.HARVESTABLE) {
-            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus);
+            int finalYield = crop.getFinalYield();
+            double finalHarvestPrice = crop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
 
             JOptionPane.showMessageDialog(null, "Products Produced: "
-                                            + crop.getProductYield() + " "
+                                            + finalYield + " "
                                             + crop.getSeed() +"\nObjectcoins Earned: "
                                             + String.format("%.2f", finalHarvestPrice)
                                             + " Objectcoins", "Harvest Successful", JOptionPane.PLAIN_MESSAGE);
@@ -284,36 +223,6 @@ public class Farmer {
             level++;
             JOptionPane.showMessageDialog(null, "Farmer is now level " + level, "Leveled Up", JOptionPane.PLAIN_MESSAGE);
         }
-    }
-
-    /**
-     This function determines if the farmer can plant a tree on the given tile
-     @param tiles - set of tiles in the plot to be used to check the 8 surrounding tiles of the given
-     @param tile - tile to be examined
-     */
-    public boolean isTreeValid(Tile[][] tiles, Tile tile) {
-        int row = -1;
-        int col = -1;
-
-        for(int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for(int j = 0; j < Constants.FARM_LENGTH; j++) {
-                if(i == 0 || i == (Constants.FARM_WIDTH-1) || j == 0 || j == (Constants.FARM_LENGTH-1)) {
-                    if (tiles[i][j].equals(tile))
-                        return false;
-                }
-                else if (tiles[i][j].equals(tile)) {
-                    row = i;
-                    col = j;
-                }
-            }
-        }
-
-        for(int i = row-1; i <= row+1; i++)
-            for(int j = col-1; j <= col+1; j++)
-                if (tiles[i][j].getTileState() != TileStates.NOT_PLOWED && tiles[i][j].getTileState() != TileStates.PLOWED)
-                    return false;
-
-        return true;
     }
 
     /**
