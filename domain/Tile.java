@@ -50,8 +50,8 @@ public class Tile {
      @param tile - tile to be examined
      @param isTree - boolean value to determine if the crop is a tree
      */
-    public boolean isPlantable(Tile tile, Tile[][] tiles, boolean isTree) {
-        if (tile.getTileState() != TileStates.PLOWED || tile.getTileState() == TileStates.PLANTED) {
+    public boolean isPlantable(Tile[][] tiles, boolean isTree) {
+        if (tileState != TileStates.PLOWED || tileState == TileStates.PLANTED) {
             return false; // Tile is not plowed or already has a crop
         }
     
@@ -62,7 +62,7 @@ public class Tile {
             // Locate the tile position in the grid
             for (int i = 0; i < Constants.FARM_WIDTH; i++) {
                 for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-                    if (tiles[i][j].equals(tile)) {
+                    if (tiles[i][j].equals(this)) {
                         row = i;
                         col = j;
                         break;

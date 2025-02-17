@@ -64,7 +64,7 @@ public class Farmer {
 
         boolean isTree = shop.getCropSeeds().get(plant).getType() == CropType.FRUIT_TREE;
 
-        if(tile.isPlantable(tile, tiles, isTree)) {
+        if(tile.isPlantable(tiles, isTree)) {
             
             Crop crop = shop.buy(plant, wallet, seedCostReduction);
 
@@ -74,6 +74,8 @@ public class Farmer {
             }
 
             wallet -= crop.getSeedCost() - seedCostReduction;
+            
+            tile.setTileState(TileStates.PLANTED);
             tile.setCrop(crop);
         }
         else
