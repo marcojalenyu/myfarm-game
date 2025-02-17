@@ -59,6 +59,13 @@ public class MyFarmGUI extends JFrame {
         return label;
     }
 
+    private JPanel createFarmerInfoSubPanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.decode("#abd7d8"));
+        panel.setLayout(new BorderLayout());
+        return panel;
+    }
+
     private JPanel createGameTitlePanel() {
         JPanel gameTitlePanel = new JPanel();
         gameTitlePanel.setLayout(new GridBagLayout());
@@ -76,15 +83,11 @@ public class MyFarmGUI extends JFrame {
         farmerInfoPanel.setLayout(new BorderLayout());
 
         //sub sub panel Wallet, Level, Experience, Type
-        JPanel farmerInfoPanelLeft = new JPanel();
+        JPanel farmerInfoPanelLeft = createFarmerInfoSubPanel();
         farmerInfoPanelLeft.setBorder(new EmptyBorder(0,150,0,0));
-        farmerInfoPanelLeft.setBackground(Color.decode("#abd7d8"));
-        farmerInfoPanelLeft.setLayout(new BorderLayout());
 
         // sub sub sub panel Wallet and Level
-            JPanel farmerInfoPanelLeftUp = new JPanel();
-            farmerInfoPanelLeftUp.setLayout(new BorderLayout());
-            farmerInfoPanelLeftUp.setBackground(Color.decode("#abd7d8"));
+            JPanel farmerInfoPanelLeftUp = createFarmerInfoSubPanel();
 
                 wallet = createBlackMinecraftJLabel("Wallet: " );
                 farmerInfoPanelLeftUp.add(wallet, BorderLayout.NORTH);
@@ -95,9 +98,7 @@ public class MyFarmGUI extends JFrame {
             farmerInfoPanelLeft.add(farmerInfoPanelLeftUp, BorderLayout.NORTH);
 
             //sub sub sub panel Experience and Type
-            JPanel farmerInfoPanelLeftDown = new JPanel();
-            farmerInfoPanelLeftDown.setLayout(new BorderLayout());
-            farmerInfoPanelLeftDown.setBackground(Color.decode("#abd7d8"));
+            JPanel farmerInfoPanelLeftDown = createFarmerInfoSubPanel();
 
                 experience = createBlackMinecraftJLabel("Experience: ");
                 farmerInfoPanelLeftDown.add(experience, BorderLayout.NORTH);
@@ -108,14 +109,11 @@ public class MyFarmGUI extends JFrame {
             farmerInfoPanelLeft.add(farmerInfoPanelLeftDown, BorderLayout.SOUTH);
         farmerInfoPanel.add(farmerInfoPanelLeft, BorderLayout.WEST);
 
-        JPanel farmerInfoPanelCenter = new JPanel();
-        farmerInfoPanelCenter.setBackground(Color.decode("#abd7d8"));
+        JPanel farmerInfoPanelCenter = createFarmerInfoSubPanel();
         farmerInfoPanel.add(farmerInfoPanelCenter, BorderLayout.CENTER);
 
         //sub panel for Day
-        JPanel farmerInfoPanelRight = new JPanel();
-        farmerInfoPanelRight.setLayout(new BorderLayout());
-        farmerInfoPanelRight.setBackground(Color.decode("#abd7d8"));
+        JPanel farmerInfoPanelRight = createFarmerInfoSubPanel();
 
         day = createBlackMinecraftJLabel("");
         farmerInfoPanelRight.add(day, BorderLayout.NORTH);
