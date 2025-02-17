@@ -167,6 +167,22 @@ public class Farmer {
         }
     }
 
+    public boolean canLevelUp() {
+        return type.canLevelUp(level);
+    }
+
+    public boolean isLegendary() {
+        return type.equals(FarmerType.LEGENDARY_FARMER);
+    }
+
+    public int getLevelUpCost() {
+        return type.getLevelUpCost();
+    }
+
+    public String getNextLevelString() {
+        return type.getNextLevel(type).toString();
+    }
+
     /**
      "Farmer registers" by changing FarmerType and the associated bonus
      */

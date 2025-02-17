@@ -40,41 +40,21 @@ public class Controller implements ActionListener{
      *         false if otherwise
      */
     public boolean canRegister() {
-        boolean isValid = false;
-        int option = JOptionPane.NO_OPTION;
-
-        switch (farmer.getType()) {
-            case FARMER:
-                if (farmer.getLevel() >= 5)
-                    isValid = true;
-                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a registered farmer for 200 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                break;
-            case REGISTERED_FARMER:
-                if (farmer.getLevel() >= 10)
-                    isValid = true;
-                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a distinguished farmer for 300 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                break;
-            case DISTINGUISHED_FARMER:
-                if (farmer.getLevel() >= 15)
-                    isValid = true;
-                option = JOptionPane.showConfirmDialog(gui,"Do you want to be a legendary farmer for 400 Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION ,
-                            JOptionPane.QUESTION_MESSAGE);
-                break;
-            case LEGENDARY_FARMER:
-                isValid = true;
-                JOptionPane.showMessageDialog(gui, "You are already at the highest title.", "Invalid", JOptionPane.ERROR_MESSAGE);
-                break;
+        if (farmer.isLegendary()) {
+            JOptionPane.showMessageDialog(gui, "You are already at the highest title.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else if (!farmer.canLevelUp()) {
+            JOptionPane.showMessageDialog(gui, "Your level is not high enough.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
 
-        if (option == JOptionPane.YES_OPTION)
-            if(isValid)
-                return true;
-            else
-                JOptionPane.showMessageDialog(gui, "Your level is not high enough.", "Invalid", JOptionPane.ERROR_MESSAGE);
+        int option = JOptionPane.showConfirmDialog(gui,"Do you want to be a" + farmer.getNextLevelString() + " for " + farmer.getLevelUpCost() + " Objectcoins?", "Registration", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
 
-       return false;
+        if (option == JOptionPane.YES_OPTION)
+            return true;
+        else
+            return false;
     }
 
     /**
