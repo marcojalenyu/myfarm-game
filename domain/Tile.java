@@ -82,6 +82,42 @@ public class Tile {
     public void setTileState(TileStates tileState) {
         this.tileState = tileState;
     }
+
+    public String getCropIcon() {
+        String typeString;
+        if (crop.getType().equals(CropType.FRUIT_TREE)) {
+            typeString = "Tree";
+        } else {
+            typeString = "Plant";
+        }
+
+        String returnString = "";
+
+        switch(crop.getCropState()) {
+            case CropStates.GROWING:
+                if (crop.isWateredEnough() && crop.isFertilizedEnough())
+                    returnString = "assets/healthy" + typeString + ".png";
+                else if (crop.isWateredEnough())
+                    returnString = "assets/watered" + typeString + ".png";
+                else if (crop.isFertilizedEnough())
+                    returnString = "assets/fertilized" + typeString + ".png";
+                else
+                    returnString = "assets/growing" + typeString + ".png";
+                break;
+
+            case CropStates.HARVESTABLE:
+                returnString = "assets/"+ crop.getSeed() +"Done.png";
+                break;
+
+            case CropStates.WITHERED:
+                returnString = "assets/withered.jpg";
+                break;
+        }
+
+        return returnString;
+    }
+
+
     public Crop getCrop() {
         return crop;
     }
