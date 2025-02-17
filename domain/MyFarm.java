@@ -85,7 +85,7 @@ public class MyFarm {
                 if(!this.tiles[row][col].isPlanted() || this.tiles[row][col].isWithered())
                     inactiveCount++;
 
-        return this.farmer.canAffordCheapestSeed() &&
+        return !this.farmer.canAffordCheapestSeed() &&
                 inactiveCount == this.length * this.width;
     }
 
