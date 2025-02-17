@@ -14,9 +14,6 @@ import java.util.ArrayList;
  */
 public class MyFarmGUI extends JFrame {
 
-    private final int WINDOW_WIDTH = 900;
-    private final int WINDOW_HEIGHT = 680;
-
     /**
      Constructor of MyFarmGUI sets the icons, windows, and frames
      */
@@ -25,7 +22,11 @@ public class MyFarmGUI extends JFrame {
         ImageIcon icon = new ImageIcon("assets/icon.png");
         setIconImage(icon.getImage());
         setLayout(new BorderLayout());
+
+        final int WINDOW_WIDTH = 900;
+        final int WINDOW_HEIGHT = 680;
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
         setResizable(false);
         init();
         setVisible(true);
