@@ -185,7 +185,7 @@ public class MyFarmGUI extends JFrame {
                 Tile tile = myFarm.getTile(i, j);
                 JButton tileIcon = tiles[i][j];
 
-                tile.updateButton(tileIcon);
+                tileIcon.setIcon(tile.getCropIcon());
             }
         }
     }

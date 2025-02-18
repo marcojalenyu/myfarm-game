@@ -78,23 +78,21 @@ public class Tile {
         return !tileState.equals(TileStates.PLANTED) || crop.isWithered();
     }
 
-    public void updateButton (JButton tileIcon) {
+    public ImageIcon getCropIcon() {
         switch(tileState) {
             case TileStates.ROCK:
-                tileIcon.setIcon(new ImageIcon("assets/rocked.jpg"));
-                break;
+                return new ImageIcon("assets/rocked.jpg");
 
             case TileStates.NOT_PLOWED:
-                tileIcon.setIcon(new ImageIcon("assets/unplowed.jpg"));
-                break;
+                return new ImageIcon("assets/unplowed.jpg");
 
             case TileStates.PLOWED:
-                tileIcon.setIcon(new ImageIcon("assets/plowed.jpg"));
-                break;
+                return new ImageIcon("assets/plowed.jpg");
 
             case TileStates.PLANTED:
-                tileIcon.setIcon(new ImageIcon(this.crop.getIcon()));
-                break;
+                return new ImageIcon(this.crop.getIcon());
+            default:
+                return null;
         }
     }
 
