@@ -64,7 +64,7 @@ public class MyFarm {
                 int i = Integer.parseInt(substrings[0]);
                 int j = Integer.parseInt(substrings[1]);
 
-                tiles[i][j].setTileState(TileStates.ROCK);
+                tiles[i][j].placeRock();
             }
         } catch(IOException e) {
             System.out.println("Error");

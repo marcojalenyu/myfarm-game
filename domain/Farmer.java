@@ -119,7 +119,7 @@ public class Farmer {
         } catch (InvalidTileException e) {
             throw new InvalidTileException(e.getMessage());
         }
-        int finalYield = harvestedCrop.getFinalYield();
+        int finalYield = harvestedCrop.computeFinalYield();
         double income = harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
         this.wallet += income;
         this.gainExperience(harvestedCrop.getExperienceYield());

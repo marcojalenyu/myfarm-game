@@ -82,7 +82,7 @@ public class Crop implements Cloneable {
         }
     }
 
-    public int getFinalYield() {
+    public int computeFinalYield() {
         if(finalYield == 0)
             finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
         return finalYield;
@@ -105,6 +105,40 @@ public class Crop implements Cloneable {
         finalHarvestPrice *= type.getHarvestMultiplier();
 
         return finalHarvestPrice;
+    }
+
+    public String getIcon() {
+        String typeString;
+        if (type.equals(CropType.FRUIT_TREE)) {
+            typeString = "Tree";
+        } else {
+            typeString = "Plant";
+        }
+
+        String returnString = "";
+
+        switch(cropState) {
+            case GROWING:
+                if (isWateredEnough() && isFertilizedEnough())
+                    returnString = "assets/healthy" + typeString + ".png";
+                else if (isWateredEnough())
+                    returnString = "assets/watered" + typeString + ".png";
+                else if (isFertilizedEnough())
+                    returnString = "assets/fertilized" + typeString + ".png";
+                else
+                    returnString = "assets/growing" + typeString + ".png";
+                break;
+
+            case HARVESTABLE:
+                returnString = "assets/"+ seed +"Done.png";
+                break;
+
+            case WITHERED:
+                returnString = "assets/withered.jpg";
+                break;
+        }
+
+        return returnString;
     }
 
     public void water() {
@@ -137,14 +171,8 @@ public class Crop implements Cloneable {
     public String getSeed() {
         return seed;
     }
-    public CropType getType() {
-        return type;
-    }
     public double getExperienceYield() {
         return experienceYield;
-    }
-    public CropStates getCropState() {
-        return cropState;
     }
     public int getSeedCost() {
         return seedCost;
