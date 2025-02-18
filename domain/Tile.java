@@ -71,11 +71,12 @@ public class Tile {
         throw new InvalidTileException("This tile cannot be harvested.");
     }
 
-    /**
-     Getters and Setters:
-     */
     public void placeRock() {
         this.tileState = TileStates.ROCK;
+    }
+
+    public boolean isInactive() {
+        return !tileState.equals(TileStates.PLANTED) || crop.isWithered();
     }
 
     public void updateButton (JButton tileIcon) {
@@ -98,21 +99,14 @@ public class Tile {
         }
     }
 
-    public Crop getCrop() {
-        return crop;
-    }
-
-    public boolean isInactive() {
-        return !tileState.equals(TileStates.PLANTED) || crop.isWithered();
-    }
-
     /**
      This function determines if the farmer can plant a tree on the given tile
      @param tiles - set of tiles in the plot to be used to check the 8 surrounding tiles of the given
      @param isTree - boolean value to determine if the crop is a tree
      */
     public boolean isPlantable(Tile[][] tiles, boolean isTree) {
-        if (tileState == TileStates.NOT_PLOWED || tileState == TileStates.PLANTED) {
+
+        if (tileState != TileStates.PLOWED) {
             return false;
         }
 
@@ -150,5 +144,12 @@ public class Tile {
         }
     
         return true;
+    }
+
+    /**
+     Getters and Setters:
+     */
+    public Crop getCrop() {
+        return crop;
     }
 }
