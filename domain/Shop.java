@@ -29,7 +29,7 @@ public class Shop {
 
         int finalCost = crop.getSeedCost() - seedCostReduction;
 
-        if (wallet <= finalCost) {
+        if (wallet < finalCost) {
             return null;
         }
     

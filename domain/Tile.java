@@ -10,90 +10,68 @@ public class Tile {
      1. tileState: the current state of the tile
      2. crop: holds the crop planted by the farmer (null if no crop)
      */
-    private TileStates tileState;
-    private Crop crop;
+    private final int row;
+    private final int col;
+    private TileState tileState;
 
     /**
      Constructor of Tile initializes a tile on the plot.
      */
-    public Tile(TileStates tileState) {
-        this.tileState = tileState;
-        this.crop = null;
+    public Tile(int row, int col) {
+        this.row = row;
+        this.col = col;
+        this.tileState = new NotPlowedTileState(this);
     }
 
     /**
      * Updates the tile and the crop inside the tile.
      */
     public void update() {
-        if (this.tileState == TileStates.PLANTED) {
-            this.crop.update();
-        }
+        this.tileState.update();
     }
 
     public boolean plow() {
-        if (this.tileState == TileStates.NOT_PLOWED) {
-            this.tileState = TileStates.PLOWED;
-            return true;
-        }
-        return false;
+        return this.tileState.plow();
     }
 
     public boolean dig() {
-        if (this.tileState == TileStates.ROCK) {
-            return false;
-        }
-        this.tileState = TileStates.NOT_PLOWED;
-        this.crop = null;
-        return true;
+        return this.tileState.dig();
     }
 
     public boolean mine() {
-        if (this.tileState == TileStates.ROCK) {
-            this.tileState = TileStates.NOT_PLOWED;
-            return true;
-        }
-        return false;
+        return this.tileState.mine();
     }
 
     public void plant(Crop crop) {
-        this.tileState = TileStates.PLANTED;
-        this.crop = crop;
+        this.tileState.plant(crop);
+    }
+
+    public boolean water() {
+        return this.tileState.water();
+    }
+
+    public boolean fertilize() {
+        return this.tileState.fertilize();
     }
 
     public Crop harvest() throws InvalidTileException {
-        if (this.tileState == TileStates.PLANTED && this.crop.isHarvestable()) {
-            Crop harvestedCrop = this.crop;
-            this.tileState = TileStates.NOT_PLOWED;
-            this.crop = null;
-            return harvestedCrop;
+        try {
+            return this.tileState.harvest();
+        } catch (InvalidTileException e) {
+            throw new InvalidTileException(e.getMessage());
         }
-        throw new InvalidTileException("This tile cannot be harvested.");
     }
 
     public void placeRock() {
-        this.tileState = TileStates.ROCK;
+        this.tileState = new RockTileState(this);
     }
 
     public boolean isInactive() {
-        return !tileState.equals(TileStates.PLANTED) || crop.isWithered();
+        return this.tileState.isInactive();
     }
 
     public ImageIcon getCropIcon() {
-        switch(tileState) {
-            case TileStates.ROCK:
-                return new ImageIcon("assets/rocked.jpg");
-
-            case TileStates.NOT_PLOWED:
-                return new ImageIcon("assets/unplowed.jpg");
-
-            case TileStates.PLOWED:
-                return new ImageIcon("assets/plowed.jpg");
-
-            case TileStates.PLANTED:
-                return new ImageIcon(this.crop.getIcon());
-            default:
-                return null;
-        }
+        return this.tileState.getCropIcon();
     }
 
     /**
@@ -102,51 +80,16 @@ public class Tile {
      @param isTree - boolean value to determine if the crop is a tree
      */
     public boolean isPlantable(Tile[][] tiles, boolean isTree) {
-
-        if (tileState != TileStates.PLOWED) {
-            return false;
-        }
-
-        if (!isTree) {
-            return true;
-        }
-
-        int row = -1;
-        int col = -1;
-
-        // Locate the tile position in the grid
-        for (int i = 0; i < Constants.FARM_WIDTH; i++) {
-            for (int j = 0; j < Constants.FARM_LENGTH; j++) {
-                if (tiles[i][j].equals(this)) {
-                    row = i;
-                    col = j;
-                    break;
-                }
-            }
-            if (row != -1) break;
-        }
-
-        // Ensure the tree is not on the farm's border
-        if (row == 0 || row == Constants.FARM_WIDTH - 1 || col == 0 || col == Constants.FARM_LENGTH - 1) {
-            return false;
-        }
-
-        // Check all adjacent tiles for emptiness
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                if (tiles[i][j].crop != null || tiles[i][j].tileState == TileStates.ROCK) {
-                    return false; // Adjacent tile is occupied
-                }
-            }
-        }
-    
-        return true;
+        return this.tileState.isPlantable(isTree, row, col, tiles);
     }
 
     /**
      Getters and Setters:
      */
-    public Crop getCrop() {
-        return crop;
+    public TileState getTileState() {
+        return tileState;
+    }
+    public void setTileState(TileState tileState) {
+        this.tileState = tileState;
     }
 }

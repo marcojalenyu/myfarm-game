@@ -32,7 +32,7 @@ public class MyFarm {
 
         for (int row = 0; row < width; row++)
             for (int col = 0; col < length; col++)
-                this.tiles[row][col] = new Tile(TileStates.NOT_PLOWED);
+                this.tiles[row][col] = new Tile(row, col);
 
         generateRocks();
     }
@@ -87,6 +87,21 @@ public class MyFarm {
 
         return !this.farmer.canAffordCheapestSeed() &&
                 inactiveCount == this.length * this.width;
+    }
+
+    public static boolean isTileOnEdge(int row, int col) {
+        return row == 0 || row == Constants.FARM_WIDTH - 1 || col == 0 || col == Constants.FARM_LENGTH - 1;
+    }
+
+    public static boolean isAdjacentTilesEmpty(int row, int col, Tile[][] tiles) {
+        for (int i = row - 1; i <= row + 1; i++) {
+            for (int j = col - 1; j <= col + 1; j++) {
+                if (tiles[i][j].getTileState() instanceof RockTileState || tiles[i][j].getTileState() instanceof PlantedTileState) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

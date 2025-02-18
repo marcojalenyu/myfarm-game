@@ -72,6 +72,7 @@ public class Farmer {
                 throw new InsufficientFundsException("Not enough Objectcoins.");
             }
 
+            crop.startGrowingState();
             this.wallet -= crop.getSeedCost() - seedCostReduction;
             tile.plant(crop);
         }
@@ -81,31 +82,34 @@ public class Farmer {
 
     /**
      "Farmer waters a crop" by adding 1 to timesWatered
-     @param crop - crop that will be watered by the farmer
+     @param tile - tile that will be watered by the farmer
      */
-    public void water(Crop crop) throws CropNotFoundException{
-        if(crop != null) {
-            crop.water();
+    public void water(Tile tile) throws CropNotFoundException{
+
+        if (tile.water()) {
             gainExperience(Constants.WATERING_EXP);
         }
-        else
+        else {
             throw new CropNotFoundException("This tile has no crop.");
+        }
     }
 
     /**
      "Farmer fertilizes a tile" by adding 1 to timesFertilized
-     @param crop - crop that will be fertilized by the farmer
+     @param tile - tile that will be fertilized by the farmer
      */
-    public void fertilize(Crop crop) throws CropNotFoundException, InsufficientFundsException {
-        if (crop == null) {
-            throw new CropNotFoundException("This tile has no crop.");
-        } else if (wallet < Constants.FERTILIZER_COST) {
+    public void fertilize(Tile tile) throws CropNotFoundException, InsufficientFundsException {
+
+        if (wallet < Constants.FERTILIZER_COST) {
             throw new InsufficientFundsException("Not enough Objectcoins.");
         }
-
-        crop.fertilize();
-        wallet -= Constants.FERTILIZER_COST;
-        gainExperience(Constants.FERTILIZING_EXP);
+        else if (tile.fertilize()) {
+            wallet -= Constants.FERTILIZER_COST;
+            gainExperience(Constants.FERTILIZING_EXP);
+        }
+        else {
+            throw new CropNotFoundException("This tile has no crop.");
+        }
     }
 
     /**

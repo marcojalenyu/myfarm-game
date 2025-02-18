@@ -102,7 +102,6 @@ public class Controller implements ActionListener{
                     for (int j = 0; j < Constants.FARM_LENGTH; j++) {
 
                         Tile tile = myFarm.getTile(i, j);
-                        Crop crop = tile.getCrop();
 
                         if (button.equals(String.valueOf(i * Constants.FARM_LENGTH + j))) {
                             switch(selected) {
@@ -110,10 +109,10 @@ public class Controller implements ActionListener{
                                     farmer.plow(tile);
                                     break;
                                 case "Water":
-                                    farmer.water(crop);
+                                    farmer.water(tile);
                                     break;
                                 case "Fertilizer":
-                                    farmer.fertilize(crop);
+                                    farmer.fertilize(tile);
                                     break;
                                 case "Harvest":
                                     String output = farmer.harvest(tile);

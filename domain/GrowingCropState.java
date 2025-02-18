@@ -4,8 +4,9 @@ public class GrowingCropState extends CropState {
         super(crop);
     }
 
+    @Override
     public void update() {
-        crop.incrementHarvestTime();
+        crop.progressHarvestTime();
 
         if (crop.isTimeToHarvest()) {
             if (crop.isWateredEnough() && crop.isFertilizedEnough()) {
@@ -17,6 +18,7 @@ public class GrowingCropState extends CropState {
         }
     }
 
+    @Override
     public String getIcon(String seedName, String typeString) {
 
         if (crop.isWateredEnough() && crop.isFertilizedEnough())

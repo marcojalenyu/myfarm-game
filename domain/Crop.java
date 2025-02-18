@@ -51,7 +51,7 @@ public class Crop implements Cloneable {
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
         this.seedCost = seedCost;
-        this.cropState = new GrowingCropState(this);
+        this.cropState = null;
     }
 
     /**
@@ -153,10 +153,13 @@ public class Crop implements Cloneable {
         this.cropState = cropState;
     }
 
+    public void startGrowingState() {
+        this.cropState = new GrowingCropState(this);
+    }
     public Boolean isTimeToHarvest() {
         return this.harvestTime == 0;
     }
-    public void incrementHarvestTime() {
-        harvestTime++;
+    public void progressHarvestTime() {
+        harvestTime--;
     }
 }
