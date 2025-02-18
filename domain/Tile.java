@@ -25,7 +25,7 @@ public class Tile {
      * Updates the tile and the crop inside the tile.
      */
     public void update() {
-        if (this.tileState == TileStates.PLANTED && this.crop != null) {
+        if (this.tileState == TileStates.PLANTED) {
             this.crop.update();
         }
     }
@@ -61,8 +61,7 @@ public class Tile {
     }
 
     public Crop harvest() throws InvalidTileException {
-        if (this.tileState == TileStates.PLANTED
-                && this.crop != null && this.crop.isHarvestable()) {
+        if (this.tileState == TileStates.PLANTED && this.crop.isHarvestable()) {
             Crop harvestedCrop = this.crop;
             this.tileState = TileStates.NOT_PLOWED;
             this.crop = null;
@@ -137,7 +136,7 @@ public class Tile {
         // Check all adjacent tiles for emptiness
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
-                if (tiles[i][j].crop != null) {
+                if (tiles[i][j].crop != null || tiles[i][j].tileState == TileStates.ROCK) {
                     return false; // Adjacent tile is occupied
                 }
             }
