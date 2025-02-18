@@ -1,3 +1,5 @@
+import static java.lang.Math.min;
+
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
@@ -89,22 +91,14 @@ public class Crop implements Cloneable {
     }
 
     public double computeHarvestPrice(int earnBonus, int waterLimitIncrease, int fertilizerLimitIncrease) {
-
+        // To limit the water and fertilizer bonus gained
+        timesWatered = min(timesWatered, waterNeeded+waterLimitIncrease);
+        timesFertilized = min(timesFertilized, fertilizerNeeded+fertilizerLimitIncrease);
         double harvestTotal = finalYield * (basePrice + earnBonus);
-
-        if (timesWatered > waterLimitIncrease) {
-            timesWatered = waterLimitIncrease;
-        }
         double waterBonus = harvestTotal * 0.2 * (timesWatered - 1);
-
-        if (timesFertilized > fertilizerLimitIncrease) {
-            timesFertilized = fertilizerLimitIncrease;
-        }
         double fertilizerBonus = harvestTotal * 0.5 * timesFertilized;
         double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
-        finalHarvestPrice *= type.getHarvestMultiplier();
-
-        return finalHarvestPrice;
+        return finalHarvestPrice * type.getHarvestMultiplier();
     }
 
     public String getIcon() {
