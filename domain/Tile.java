@@ -1,4 +1,5 @@
 import javax.swing.*;
+import exceptions.*;
 
 /**
     The Tile class contains records related to each tile in the plot.
@@ -59,18 +60,15 @@ public class Tile {
         this.crop = crop;
     }
 
-    public Crop harvest() {
+    public Crop harvest() throws InvalidTileException {
         if (this.tileState == TileStates.PLANTED
-                && this.crop != null) {
+                && this.crop != null && this.crop.isHarvestable()) {
             Crop harvestedCrop = this.crop;
             this.tileState = TileStates.NOT_PLOWED;
             this.crop = null;
             return harvestedCrop;
         }
-        else {
-            JOptionPane.showMessageDialog(null, "This tile cannot be harvested.", "Invalid", JOptionPane.ERROR_MESSAGE);
-        }
-        return null;
+        throw new InvalidTileException("This tile cannot be harvested.");
     }
 
     /**

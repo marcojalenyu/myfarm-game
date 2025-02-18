@@ -1,7 +1,7 @@
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
-public class Crop {
+public class Crop implements Cloneable {
     /**
      Attributes of Crop:
      1. seed: holds the seed name
@@ -54,6 +54,19 @@ public class Crop {
     }
 
     /**
+     * Clones the crop
+     * @return a new crop with the same attributes
+     */
+    @Override
+    public Crop clone() {
+        try {
+            return (Crop) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    /**
      * Updates the crop per day by reducing harvest time and checking if harvestable or withered
      */
     public void update() {
@@ -70,7 +83,8 @@ public class Crop {
     }
 
     public int getFinalYield() {
-        finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
+        if(finalYield == 0)
+            finalYield = (int) (Math.random() * (maxYield - minYield + 1) + minYield);
         return finalYield;
     }
 
@@ -111,6 +125,10 @@ public class Crop {
 
     public boolean isWithered() {
         return cropState.equals(CropStates.WITHERED);
+    }
+
+    public boolean isHarvestable() {
+        return cropState.equals(CropStates.HARVESTABLE);
     }
 
     /**

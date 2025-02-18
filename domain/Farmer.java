@@ -1,4 +1,4 @@
-import javax.swing.*;
+import exceptions.*;
 
 /**
  The Farmer class contains records related to the farmer such as wallet and level.
@@ -45,12 +45,12 @@ public class Farmer {
      "Farmer plows a tile" by setting isPlowed to true
      @param tile - tile that will be plowed by the farmer
      */
-    public void plow(Tile tile) {
+    public void plow(Tile tile) throws InvalidTileException {
         if (tile.plow()) {
             gainExperience(Constants.PLOWING_EXP);
         }
         else {
-            JOptionPane.showMessageDialog(null, "This tile cannot be plowed.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new InvalidTileException("This tile cannot be plowed.");
         }
     }
 
@@ -60,7 +60,7 @@ public class Farmer {
      @param plant - name of the seed to be planted (determines which Crop to be instantiated)
      @param tiles - set of tiles in the plot (used to validate tree crops)
      */
-    public void plant(Tile tile, String plant, Tile[][] tiles) {
+    public void plant(Tile tile, String plant, Tile[][] tiles) throws InsufficientFundsException, InvalidTileException {
 
         boolean isTree = shop.isPlantTree(plant);
 
@@ -69,41 +69,38 @@ public class Farmer {
             Crop crop = shop.buy(plant, wallet, seedCostReduction);
 
             if(crop == null) {
-                JOptionPane.showMessageDialog(null, "Not enough Objectcoins", "Invalid", JOptionPane.ERROR_MESSAGE);
-                return;
+                throw new InsufficientFundsException("Not enough Objectcoins.");
             }
 
             this.wallet -= crop.getSeedCost() - seedCostReduction;
             tile.plant(crop);
         }
         else
-            JOptionPane.showMessageDialog(null, "This tile cannot be planted on.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new InvalidTileException("This tile cannot be planted on.");
     }
 
     /**
      "Farmer waters a crop" by adding 1 to timesWatered
      @param crop - crop that will be watered by the farmer
      */
-    public void water(Crop crop) {
+    public void water(Crop crop) throws CropNotFoundException{
         if(crop != null) {
             crop.water();
             gainExperience(Constants.WATERING_EXP);
         }
         else
-            JOptionPane.showMessageDialog(null, "This tile has no crop.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new CropNotFoundException("This tile has no crop.");
     }
 
     /**
      "Farmer fertilizes a tile" by adding 1 to timesFertilized
      @param crop - crop that will be fertilized by the farmer
      */
-    public void fertilize(Crop crop) {
+    public void fertilize(Crop crop) throws CropNotFoundException, InsufficientFundsException {
         if (crop == null) {
-            JOptionPane.showMessageDialog(null, "This tile has no crop.", "Invalid", JOptionPane.ERROR_MESSAGE);
-            return;
+            throw new CropNotFoundException("This tile has no crop.");
         } else if (wallet < Constants.FERTILIZER_COST) {
-            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-            return;
+            throw new InsufficientFundsException("Not enough Objectcoins.");
         }
 
         crop.fertilize();
@@ -115,28 +112,32 @@ public class Farmer {
      "Farmer harvests crops on a tile" by setting crop to null and adding value to the wallet and experience of farmer
      @param tile - tile whose crop will be harvested by the farmer
      */
-    public void harvest(Tile tile) {
-        Crop harvestedCrop = tile.harvest();
-        if (harvestedCrop != null) {
-            harvestedCrop.getFinalYield();
-            this.wallet += harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
-            this.gainExperience(harvestedCrop.getExperienceYield());
-            JOptionPane.showMessageDialog(null, "Products Produced: "
-                                            + harvestedCrop.getFinalYield() + " "
-                                            + harvestedCrop.getSeed() +"\nObjectcoins Earned: "
-                                            + String.format("%.2f", harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease))
-                                            + " Objectcoins", "Harvest Successful", JOptionPane.PLAIN_MESSAGE);
+    public String harvest(Tile tile) throws InvalidTileException {
+        Crop harvestedCrop;
+        try{
+            harvestedCrop = tile.harvest();
+        } catch (InvalidTileException e) {
+            throw new InvalidTileException(e.getMessage());
         }
+        int finalYield = harvestedCrop.getFinalYield();
+        double income = harvestedCrop.computeHarvestPrice(earnBonus, waterLimitIncrease, fertilizerLimitIncrease);
+        this.wallet += income;
+        this.gainExperience(harvestedCrop.getExperienceYield());
+        
+        return ("Products Produced: "
+                    + finalYield + " "
+                    + harvestedCrop.getSeed() +"\nObjectcoins Earned: "
+                    + String.format("%.2f", income)
+                    + " Objectcoins");
     }
 
     /**
      "Farmer digs crops on a tile" by setting crop to null and setting state to NOT_PLOWED
      @param tile - tile will be shoveled  by the farmer
      */
-    public void dig(Tile tile) {
+    public void dig(Tile tile) throws InvalidTileException, InsufficientFundsException {
         if(this.wallet < Constants.DIGGING_COST) {
-            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-            return;
+            throw new InsufficientFundsException("Not enough Objectcoins.");
         }
 
         if (tile.dig()) {
@@ -144,7 +145,7 @@ public class Farmer {
             this.gainExperience(Constants.DIGGING_EXP);
         }
         else {
-            JOptionPane.showMessageDialog(null, "This tile cannot be dug.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new InvalidTileException("This tile cannot be dug.");
         }
     }
 
@@ -152,10 +153,9 @@ public class Farmer {
      "Farmer mines a tile" by setting hasRock to false
      @param tile - tile that will be mined by the farmer
      */
-    public void mine(Tile tile) {
+    public void mine(Tile tile) throws InsufficientFundsException, InvalidTileException {
         if (this.wallet < Constants.MINING_COST) {
-            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
-            return;
+            throw new InsufficientFundsException("Not enough Objectcoins.");
         }
 
         if (tile.mine()) {
@@ -163,7 +163,7 @@ public class Farmer {
             this.gainExperience(Constants.MINING_EXP);
         }
         else {
-            JOptionPane.showMessageDialog(null, "This tile cannot be mined.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new InvalidTileException("This tile cannot be mined.");
         }
     }
 
@@ -180,23 +180,25 @@ public class Farmer {
     }
 
     public String getNextLevelString() {
+        assert type.getNextLevel() != null;
         return type.getNextLevel().toString();
     }
 
     /**
      "Farmer registers" by changing FarmerType and the associated bonus
      */
-    public void register() {
+    public String register() throws InsufficientFundsException, MaxRegisterException {
         if (type.equals(FarmerType.LEGENDARY_FARMER)) {
-            return;
+            throw new MaxRegisterException("You are already at the highest title.");
         } else if (wallet < type.getLevelUpCost()) {
-            JOptionPane.showMessageDialog(null, "Not enough Objectcoins.", "Invalid", JOptionPane.ERROR_MESSAGE);
+            throw new InsufficientFundsException("Not enough Objectcoins.");
         }
 
         wallet -= type.getLevelUpCost();
         type = type.getNextLevel();
+        assert type != null;
         setBonuses(type.getEarnBonus(), type.getSeedCostReduction(), type.getWaterLimitIncrease(), type.getFertilizerLimitIncrease());
-        JOptionPane.showMessageDialog(null, "You are now a " + type.toString() + ".");
+        return type.toString();
     }
 
     /**
@@ -208,7 +210,6 @@ public class Farmer {
         if(experience >= Constants.EXP_TO_LEVEL_UP) {
             experience -= Constants.EXP_TO_LEVEL_UP;
             level++;
-            JOptionPane.showMessageDialog(null, "Farmer is now level " + level, "Leveled Up", JOptionPane.PLAIN_MESSAGE);
         }
     }
 
