@@ -1,7 +1,7 @@
 /**
     The Crop class contains records related to the crop planted on a tile.
  */
-public class Crop {
+public class Crop implements Cloneable {
     /**
      Attributes of Crop:
      1. seed: holds the seed name
@@ -51,6 +51,19 @@ public class Crop {
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
         this.seedCost = seedCost;
+    }
+
+    /**
+     * Clones the crop
+     * @return a new crop with the same attributes
+     */
+    @Override
+    public Crop clone() {
+        try {
+            return (Crop) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
     }
 
     /**

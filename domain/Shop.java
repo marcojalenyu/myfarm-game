@@ -33,7 +33,7 @@ public class Shop {
             return null;
         }
     
-        return crop;
+        return crop.clone();
     }
 
     public Map<String, Crop> getCropSeeds() {
