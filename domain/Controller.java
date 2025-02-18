@@ -80,7 +80,7 @@ public class Controller implements ActionListener{
             if (selected.isEmpty()) {
                 switch(button) {
                     case "End Day":
-                        endDay()
+                        endDay();
                         break;
                     case "Register":
                         if(canRegister()){
