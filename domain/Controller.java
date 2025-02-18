@@ -54,6 +54,20 @@ public class Controller implements ActionListener{
         return option == JOptionPane.YES_OPTION;
     }
 
+    private void endDay() {
+        if (!myFarm.isGameOver()) {
+            myFarm.advanceDay();
+            gui.triggerDeselect();
+        }
+        else {
+            int option = JOptionPane.showConfirmDialog(gui, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
+            gui.dispose();
+            if (option == JOptionPane.YES_OPTION) {
+                Controller controller = new Controller(new MyFarmGUI(), new MyFarm());
+            }
+        }
+    }
+
     /**
      This function processes the inputs to the model
      @param e the event to be processed
@@ -66,17 +80,7 @@ public class Controller implements ActionListener{
             if (selected.isEmpty()) {
                 switch(button) {
                     case "End Day":
-                        if (!myFarm.isGameOver()) {
-                            myFarm.advanceDay();
-                            gui.triggerDeselect();
-                        }
-                        else {
-                            int option = JOptionPane.showConfirmDialog(gui, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
-                            gui.dispose();
-                            if (option == JOptionPane.YES_OPTION) {
-                                Controller controller = new Controller(new MyFarmGUI(), new MyFarm());
-                            }
-                        }
+                        endDay()
                         break;
                     case "Register":
                         if(canRegister()){
