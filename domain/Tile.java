@@ -74,9 +74,6 @@ public class Tile {
     /**
      Getters and Setters:
      */
-    public TileStates getTileState() {
-        return tileState;
-    }
     public void setTileState(TileStates tileState) {
         this.tileState = tileState;
     }
@@ -140,12 +137,8 @@ public class Tile {
         return crop;
     }
 
-    public boolean isPlanted() {
-        return tileState.equals(TileStates.PLANTED);
-    }
-
-    public boolean isWithered() {
-        return crop.isWithered();
+    public boolean isInactive() {
+        return !tileState.equals(TileStates.PLANTED) || crop.isWithered();
     }
 
     /**

@@ -82,7 +82,7 @@ public class MyFarm {
 
         for (int row = 0; row < this.width; row++)
             for (int col = 0; col < this.length; col++)
-                if(!this.tiles[row][col].isPlanted() || this.tiles[row][col].isWithered())
+                if(this.tiles[row][col].isInactive())
                     inactiveCount++;
 
         return !this.farmer.canAffordCheapestSeed() &&
