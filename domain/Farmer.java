@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 import exceptions.*;
 
 /**
@@ -115,9 +113,9 @@ public class Farmer {
      @param tile - tile whose crop will be harvested by the farmer
      */
     public String harvest(Tile tile) throws InvalidTileException {
-        Crop harvestedCrop = null;
+        Crop harvestedCrop;
         try{
-        harvestedCrop = tile.harvest();
+            harvestedCrop = tile.harvest();
         } catch (InvalidTileException e) {
             throw new InvalidTileException(e.getMessage());
         }
@@ -182,6 +180,7 @@ public class Farmer {
     }
 
     public String getNextLevelString() {
+        assert type.getNextLevel() != null;
         return type.getNextLevel().toString();
     }
 
@@ -197,6 +196,7 @@ public class Farmer {
 
         wallet -= type.getLevelUpCost();
         type = type.getNextLevel();
+        assert type != null;
         setBonuses(type.getEarnBonus(), type.getSeedCostReduction(), type.getWaterLimitIncrease(), type.getFertilizerLimitIncrease());
         return type.toString();
     }
