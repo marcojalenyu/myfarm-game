@@ -32,7 +32,7 @@ public class Crop implements Cloneable {
     private final double experienceYield;
     private final double basePrice;
     private final int seedCost;
-    private CropStates cropState = CropStates.GROWING;
+    private CropState cropState;
 
     /**
      Constructor of Crop initializes the seed planted on a tile.
@@ -51,6 +51,7 @@ public class Crop implements Cloneable {
         this.experienceYield = experienceYield;
         this.basePrice = basePrice;
         this.seedCost = seedCost;
+        this.cropState = new GrowingCropState(this);
     }
 
     /**
@@ -70,16 +71,7 @@ public class Crop implements Cloneable {
      * Updates the crop per day by reducing harvest time and checking if harvestable or withered
      */
     public void update() {
-        this.harvestTime--;
-
-        if (this.harvestTime == 0
-                && this.isWateredEnough()
-                && this.isFertilizedEnough()) {
-            cropState = CropStates.HARVESTABLE;
-        }
-        else if(this.harvestTime <= 0) {
-            cropState = CropStates.WITHERED;
-        }
+        cropState.update();
     }
 
     public int computeFinalYield() {
@@ -115,30 +107,7 @@ public class Crop implements Cloneable {
             typeString = "Plant";
         }
 
-        String returnString = "";
-
-        switch(cropState) {
-            case GROWING:
-                if (isWateredEnough() && isFertilizedEnough())
-                    returnString = "assets/healthy" + typeString + ".png";
-                else if (isWateredEnough())
-                    returnString = "assets/watered" + typeString + ".png";
-                else if (isFertilizedEnough())
-                    returnString = "assets/fertilized" + typeString + ".png";
-                else
-                    returnString = "assets/growing" + typeString + ".png";
-                break;
-
-            case HARVESTABLE:
-                returnString = "assets/"+ seed +"Done.png";
-                break;
-
-            case WITHERED:
-                returnString = "assets/withered.jpg";
-                break;
-        }
-
-        return returnString;
+        return this.cropState.getIcon(seed, typeString);
     }
 
     public void water() {
@@ -158,11 +127,11 @@ public class Crop implements Cloneable {
     }
 
     public boolean isWithered() {
-        return cropState.equals(CropStates.WITHERED);
+        return this.cropState.isWithered();
     }
 
     public boolean isHarvestable() {
-        return cropState.equals(CropStates.HARVESTABLE);
+        return this.cropState.isHarvestable();
     }
 
     /**
@@ -179,5 +148,15 @@ public class Crop implements Cloneable {
     }
     public boolean isTree() {
         return type.equals(CropType.FRUIT_TREE);
+    }
+    public void setCropState(CropState cropState) {
+        this.cropState = cropState;
+    }
+
+    public Boolean isTimeToHarvest() {
+        return this.harvestTime == 0;
+    }
+    public void incrementHarvestTime() {
+        harvestTime++;
     }
 }
